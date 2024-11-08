@@ -154,7 +154,7 @@ export default function Ranking({ content, route }) {
                             </Box>
                         </Flex>
                         <Box px={'25px'}>
-                            <CustomCKEditor content={content.content || ''} />
+                            {content && content.content && <CustomCKEditor content={content.content || ''} />}
                         </Box>
                         {route === 'table-view' && <RankTable data={data} vendors={vendors} isLoadingCategory={isLoadingCategory} categories={categories} />}
                         {(route === 'chart-view' && typeof window !== 'undefined') && <RankChart showingCategory={options[showingCategory].id} country={country} />}

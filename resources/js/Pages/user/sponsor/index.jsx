@@ -75,7 +75,7 @@ const SponsorPage = ({ content }) => {
                     >
                         Sponsor
                     </Text>
-                    <CustomCKEditor content={content.content} />
+                    {content && content.content && <CustomCKEditor content={content.content} />}
                     <SimpleGrid columns={columnCount} spacing={4}>
                         {sponsors ? sponsors.map((sponsor, index) => (
                             <a href={sponsor.link} target='_blank'>

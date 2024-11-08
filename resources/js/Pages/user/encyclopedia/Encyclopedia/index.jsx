@@ -45,7 +45,7 @@ export default function EncyclopediaForm({ encyclopedia }) {
                     {encyclopedia ?
                         <>
                             <Text mb={"32px"} fontSize={22} fontWeight={600}>{encyclopedia.title}</Text>
-                            <CustomCKEditor content={encyclopedia.content} />
+                            {encyclopedia && encyclopedia.content && <CustomCKEditor content={encyclopedia.content} />}
                         </>
                         :
                         <Stack spacing={5} gap={5}>

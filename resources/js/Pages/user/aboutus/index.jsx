@@ -49,7 +49,7 @@ export default function Aboutus({ content }) {
                     >
                         About us
                     </ChakraText>
-                    <CustomCKEditor content={content.content} />
+                    {content && content.content && <CustomCKEditor content={content.content} />}
                 </Box>
             </Card>
         </UserLayout>

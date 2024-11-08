@@ -119,7 +119,7 @@ export default ({ blog, route }) => {
                                     </Flex>
                                 </Flex>
                             </Box>
-                            <CustomCKEditor content={blog.content} />
+                            {blog && blog.content && <CustomCKEditor content={blog.content} />}
                         </Box>
                     }
                     {route === 'blog-edit' &&

@@ -156,7 +156,7 @@ export default function Chat({ content }) {
     return (
         <UserLayout>
             <SeoHeader content={content} title={'Data Explorer'} />
-            <CustomCKEditor content={content.content} />
+            {content && content.content && <CustomCKEditor content={content.content} />}
             <Flex
                 w="100%"
                 direction="column"

@@ -101,7 +101,7 @@ export default function Vendor({ content }) {
                     >
                         DBMS
                     </Text>
-                    <CustomCKEditor content={content.content} />
+                    {content && content.content && <CustomCKEditor content={content.content} />}
                     <SimpleGrid columns={columnCount} spacing={4} gap={4}>
                         {isLoading || !columns ? (
                             <>

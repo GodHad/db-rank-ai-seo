@@ -120,7 +120,7 @@ export default ({ content }) => {
                                 </Link>
                             ) : <></>}
                         </Flex>
-                        <CustomCKEditor content={content.content} />
+                        {content && content.content && <CustomCKEditor content={content.content} />}
                         <Box>
                             {
                                 (blogs && blogs.data) ? blogs.data.length > 0 ? blogs.data.map((blog, index) => (

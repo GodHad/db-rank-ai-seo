@@ -399,7 +399,7 @@ export default function DBMS({ selectedDBMS, slug }) {
                                                     className='no-border-editor'
                                                     colSpan={2}
                                                 >
-                                                    <CustomCKEditor content={selectedDBMS.extra_content} />
+                                                    {selectedDBMS && selectedDBMS.extra_content && <CustomCKEditor content={selectedDBMS.extra_content} />}
                                                 </Td>
                                                 : <Td colSpan={2}><Skeleton w={'full'} maxW={'600px'} height={"30px"} borderRadius={"12px"} /></Td>
                                             }

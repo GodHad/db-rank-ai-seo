@@ -43,7 +43,7 @@ export default function Home({ content }) {
               >
                 DB Rank AI
               </Text>
-              <CustomCKEditor content={content.content} />
+              {content && content.content && <CustomCKEditor content={content.content} />}
             </Flex>
           </Card>
           <TopDBMSTable />

@@ -113,7 +113,7 @@ const EncyclopediaPage = ({ content }) => {
                     >
                         Encyclopedia
                     </Text>
-                    <CustomCKEditor content={content.content} />
+                    {content && content.content && <CustomCKEditor content={content.content} />}
                     <SimpleGrid columns={columnCount} spacing={4}>
                         {columns ? columns.map((column, index) => (
                             <Box key={index}>
