@@ -1,0 +1,383 @@
+{
+  "node_modules/laravel-vite-plugin/inertia-helpers/index.js": [],
+  "node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css": [
+    "/build/assets/FeaturedProductForm-DgETQoP1.js",
+    "/build/assets/FeaturedProductForm-DT04eFno.css"
+  ],
+  "resources/js/Pages/NotFound/index.jsx": [
+    "/build/assets/index-BduhdZpi.js"
+  ],
+  "resources/js/Pages/admin/banner/components/BannerForm.jsx": [
+    "/build/assets/BannerForm-Cxp4P6cn.js"
+  ],
+  "resources/js/Pages/admin/banner/index.jsx": [
+    "/build/assets/index-DiDKlfx1.js"
+  ],
+  "resources/js/Pages/admin/banner/requests/use-request.js": [
+    "/build/assets/use-request-CXEg0apC.js"
+  ],
+  "resources/js/Pages/admin/blog/components/blogs/components/BlogForm.jsx": [
+    "/build/assets/BlogForm-CmIAKaOl.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/admin/blog/components/blogs/index.jsx": [
+    "/build/assets/index-CYRe_FvX.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/admin/blog/components/blogs/requests/use-request.js": [
+    "/build/assets/use-request-DWBiJfY6.js"
+  ],
+  "resources/js/Pages/admin/blog/components/categories/components/CategoryModal.jsx": [
+    "/build/assets/CategoryModal-DK7ZwDGD.js"
+  ],
+  "resources/js/Pages/admin/blog/components/categories/index.jsx": [
+    "/build/assets/index-DivdcM7u.js"
+  ],
+  "resources/js/Pages/admin/blog/components/tags/components/TagModal.jsx": [
+    "/build/assets/TagModal--KMnlXqx.js"
+  ],
+  "resources/js/Pages/admin/blog/components/tags/index.jsx": [
+    "/build/assets/index-B2Bv_HsS.js"
+  ],
+  "resources/js/Pages/admin/blog/index.jsx": [
+    "/build/assets/index-CmWFgjr4.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/admin/dbms/Categories/components/CategoryModal.jsx": [
+    "/build/assets/CategoryModal-CI2Gehv1.js"
+  ],
+  "resources/js/Pages/admin/dbms/Categories/index.jsx": [
+    "/build/assets/index-CKosJwo5.js"
+  ],
+  "resources/js/Pages/admin/dbms/dbms/components/DBMSForm.jsx": [
+    "/build/assets/DBMSForm-DPscc44w.js"
+  ],
+  "resources/js/Pages/admin/dbms/dbms/index.jsx": [
+    "/build/assets/DBMSForm-DPscc44w.js"
+  ],
+  "resources/js/Pages/admin/dbms/dbms/requests/use-request.js": [
+    "/build/assets/use-request-Cf_Kil6_.js"
+  ],
+  "resources/js/Pages/admin/dbms/index.jsx": [
+    "/build/assets/index-Li9np30f.js"
+  ],
+  "resources/js/Pages/admin/encyclopedia/components/EncyclopediaForm.jsx": [
+    "/build/assets/EncyclopediaForm-Cf0nnKcV.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/admin/encyclopedia/index.jsx": [
+    "/build/assets/index-C06IsGJd.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/admin/encyclopedia/requests/use-request.js": [
+    "/build/assets/use-request-DzdpIW3X.js"
+  ],
+  "resources/js/Pages/admin/featured-products/index.jsx": [
+    "/build/assets/index-CjX6ZYVq.js"
+  ],
+  "resources/js/Pages/admin/featured-products/requests/use-request.js": [
+    "/build/assets/use-request-9Ex0rx8h.js"
+  ],
+  "resources/js/Pages/admin/featured-products/sidebar/components/FeaturedProductForm.jsx": [
+    "/build/assets/FeaturedProductForm-DgETQoP1.js",
+    "/build/assets/FeaturedProductForm-DT04eFno.css"
+  ],
+  "resources/js/Pages/admin/featured-products/sidebar/index.jsx": [
+    "/build/assets/index-CaQU2qrt.js"
+  ],
+  "resources/js/Pages/admin/featured-products/top/components/FeaturedProductForm.jsx": [
+    "/build/assets/FeaturedProductForm-CPJZLhYH.js"
+  ],
+  "resources/js/Pages/admin/featured-products/top/index.jsx": [
+    "/build/assets/index-BzBe6tVu.js"
+  ],
+  "resources/js/Pages/admin/meta-data/components/Template.jsx": [
+    "/build/assets/Template-B1igEyrc.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/admin/meta-data/home/index.jsx": [
+    "/build/assets/index-CsoSw6oL.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/admin/meta-data/index.jsx": [
+    "/build/assets/index-DWseWXJo.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/admin/meta-data/requests/use-request.js": [
+    "/build/assets/use-request-5uE4EmuI.js"
+  ],
+  "resources/js/Pages/admin/sponsors/components/SponsorForm.jsx": [
+    "/build/assets/SponsorForm-BR8UxcKS.js"
+  ],
+  "resources/js/Pages/admin/sponsors/index.jsx": [
+    "/build/assets/index-B3PvZqr3.js"
+  ],
+  "resources/js/Pages/admin/sponsors/requests/use-request.js": [
+    "/build/assets/use-request-DISTMCmE.js"
+  ],
+  "resources/js/Pages/admin/suggested-questions/components/QuestionModal.jsx": [
+    "/build/assets/QuestionModal-Cy92J0FO.js"
+  ],
+  "resources/js/Pages/admin/suggested-questions/index.jsx": [
+    "/build/assets/index-DXHkX8SO.js"
+  ],
+  "resources/js/Pages/admin/users/components/VendorForm.jsx": [
+    "/build/assets/VendorForm-CYHznr5b.js"
+  ],
+  "resources/js/Pages/admin/users/index.jsx": [
+    "/build/assets/index-_P-e_Jjf.js"
+  ],
+  "resources/js/Pages/admin/users/requests/use-request.js": [
+    "/build/assets/use-request-C9PCfFl0.js"
+  ],
+  "resources/js/Pages/auth/signIn/index.jsx": [
+    "/build/assets/index-Ds8IJ8gz.js",
+    "/build/assets/Demo-BW6MTgmx.jpg"
+  ],
+  "resources/js/Pages/user/aboutus/index.jsx": [
+    "/build/assets/index-DvAR0PUc.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/blog/Blog/index.jsx": [
+    "/build/assets/index-B-CE_uQt.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/blog/CreateBlog/index.jsx": [
+    "/build/assets/index-CWcZZrzP.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/blog/Sidebar/Sidebar.jsx": [
+    "/build/assets/Sidebar-BhRlx3Vl.js"
+  ],
+  "resources/js/Pages/user/blog/Sidebar/components/Content.jsx": [
+    "/build/assets/Content-C2L3CSaR.js"
+  ],
+  "resources/js/Pages/user/blog/Sidebar/components/Links.jsx": [
+    "/build/assets/Links-BkD9zm_x.js"
+  ],
+  "resources/js/Pages/user/blog/index.jsx": [
+    "/build/assets/index-BqeQR6Z4.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/claim-dbms/index.jsx": [
+    "/build/assets/index-DEyTC21M.js"
+  ],
+  "resources/js/Pages/user/claim-dbms/request/use-request.jsx": [
+    "/build/assets/use-request-DTvMmiIy.js"
+  ],
+  "resources/js/Pages/user/components/CustomCKEditor.jsx": [
+    "/build/assets/CustomCKEditor-dDDE0_xj.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/components/SeoHeader.jsx": [
+    "/build/assets/SeoHeader-DxzDf-f4.js"
+  ],
+  "resources/js/Pages/user/contactus/index.jsx": [
+    "/build/assets/index-COMMzjOq.js"
+  ],
+  "resources/js/Pages/user/contactus/request/use-request.js": [
+    "/build/assets/index-COMMzjOq.js"
+  ],
+  "resources/js/Pages/user/data-explorer/MessageBox.jsx": [
+    "/build/assets/MessageBox-Br7hVpwI.js"
+  ],
+  "resources/js/Pages/user/data-explorer/index.jsx": [
+    "/build/assets/index-BI-EKW8W.js",
+    "/build/assets/ckeditor5-DgE0j40o.css",
+    "/build/assets/bg-chat-image-BXYRl0wU.png"
+  ],
+  "resources/js/Pages/user/dbms/components/CompareDBMS/index.jsx": [
+    "/build/assets/index-BMGd5JXR.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/dbms/components/DBMS/index.jsx": [
+    "/build/assets/index-DyeHhFvV.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/dbms/index.jsx": [
+    "/build/assets/index-CRJ-pDsJ.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/encyclopedia/Encyclopedia/index.jsx": [
+    "/build/assets/index-C6hHF_77.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/encyclopedia/index.jsx": [
+    "/build/assets/index-CheUeVmq.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/home/components/RecentBlogs.jsx": [
+    "/build/assets/RecentBlogs-C4I8xETR.js"
+  ],
+  "resources/js/Pages/user/home/components/TopDBMSTable.jsx": [
+    "/build/assets/TopDBMSTable-BybeUt4D.js"
+  ],
+  "resources/js/Pages/user/home/index.jsx": [
+    "/build/assets/index-ByiaLelh.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/home/requests/use-request.js": [
+    "/build/assets/use-request-DSS9fKx4.js"
+  ],
+  "resources/js/Pages/user/profile/index.jsx": [
+    "/build/assets/index-BPHQCUj0.js"
+  ],
+  "resources/js/Pages/user/ranking/component/RankCharts/index.jsx": [
+    "/build/assets/index-CNR3fgOg.js"
+  ],
+  "resources/js/Pages/user/ranking/component/RankTable/index.jsx": [
+    "/build/assets/index-OH0jKulo.js"
+  ],
+  "resources/js/Pages/user/ranking/component/Sidebar/Sidebar.jsx": [
+    "/build/assets/Sidebar-BLgUQ7y6.js"
+  ],
+  "resources/js/Pages/user/ranking/component/Sidebar/components/Content.jsx": [
+    "/build/assets/Content-C88Gv5cb.js"
+  ],
+  "resources/js/Pages/user/ranking/component/Sidebar/components/Links.jsx": [
+    "/build/assets/Links-DfSt9t9W.js"
+  ],
+  "resources/js/Pages/user/ranking/index.jsx": [
+    "/build/assets/index-bxxg04gc.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/services/index.jsx": [
+    "/build/assets/index-DokSAvwP.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/Pages/user/sponsor/index.jsx": [
+    "/build/assets/index-Df6GCxq7.js",
+    "/build/assets/ckeditor5-DgE0j40o.css"
+  ],
+  "resources/js/assets/img/auth/Demo.jpg": [
+    "/build/assets/index-Ds8IJ8gz.js",
+    "/build/assets/Demo-BW6MTgmx.jpg"
+  ],
+  "resources/js/assets/img/auth/logo.png": [
+    "/build/assets/SearchBar-Dsk0VtlP.js",
+    "/build/assets/logo-AIyaFRz0.png",
+    "/build/assets/logo_black_letter-DufqLMNR.png"
+  ],
+  "resources/js/assets/img/auth/logo_black_letter.png": [
+    "/build/assets/SearchBar-Dsk0VtlP.js",
+    "/build/assets/logo-AIyaFRz0.png",
+    "/build/assets/logo_black_letter-DufqLMNR.png"
+  ],
+  "resources/js/assets/img/bg-chat-image.png": [
+    "/build/assets/index-BI-EKW8W.js",
+    "/build/assets/ckeditor5-DgE0j40o.css",
+    "/build/assets/bg-chat-image-BXYRl0wU.png"
+  ],
+  "resources/js/components/404/index.jsx": [
+    "/build/assets/index-BduhdZpi.js"
+  ],
+  "resources/js/components/card/Card.jsx": [
+    "/build/assets/Card-M0XrdzyB.js"
+  ],
+  "resources/js/components/featuredProductSidebar/Sidebar.jsx": [
+    "/build/assets/index-D7V5_Wy3.js"
+  ],
+  "resources/js/components/featuredProductSidebar/components/Content.jsx": [
+    "/build/assets/index-D7V5_Wy3.js"
+  ],
+  "resources/js/components/featuredProductSidebar/requests/use-request.js": [],
+  "resources/js/components/fixedPlugin/FixedPlugin.jsx": [
+    "/build/assets/index-Ds8IJ8gz.js",
+    "/build/assets/Demo-BW6MTgmx.jpg"
+  ],
+  "resources/js/components/footer/FooterAdmin.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/components/footer/FooterAuth.jsx": [
+    "/build/assets/index-Ds8IJ8gz.js",
+    "/build/assets/Demo-BW6MTgmx.jpg"
+  ],
+  "resources/js/components/form/CustomInput.jsx": [
+    "/build/assets/CustomInput-D8rT110g.js"
+  ],
+  "resources/js/components/form/CustomMultiSelect.jsx": [
+    "/build/assets/CustomMultiSelect-CrKxktuE.js"
+  ],
+  "resources/js/components/navbar/NavbarAdmin.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/components/navbar/NavbarLinksAdmin.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/components/navbar/NavbarLinksUser.jsx": [
+    "/build/assets/index-D7V5_Wy3.js"
+  ],
+  "resources/js/components/navbar/NavbarUser.jsx": [
+    "/build/assets/index-D7V5_Wy3.js"
+  ],
+  "resources/js/components/navbar/components/Logo.jsx": [
+    "/build/assets/index-D7V5_Wy3.js"
+  ],
+  "resources/js/components/navbar/searchBar/SearchBar.jsx": [
+    "/build/assets/SearchBar-Dsk0VtlP.js",
+    "/build/assets/logo-AIyaFRz0.png",
+    "/build/assets/logo_black_letter-DufqLMNR.png"
+  ],
+  "resources/js/components/scrollbar/Scrollbar.jsx": [
+    "/build/assets/SearchBar-Dsk0VtlP.js",
+    "/build/assets/logo-AIyaFRz0.png",
+    "/build/assets/logo_black_letter-DufqLMNR.png"
+  ],
+  "resources/js/components/separator/Separator.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/components/sidebar/Sidebar.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/components/sidebar/components/Brand.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/components/sidebar/components/Content.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/components/sidebar/components/Links.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/contexts/DBMSContext.jsx": [],
+  "resources/js/contexts/FeaturedProductsContext.jsx": [],
+  "resources/js/contexts/SidebarContext.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/contexts/UserContext.jsx": [],
+  "resources/js/layouts/admin/index.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/layouts/admin/routes.jsx": [
+    "/build/assets/index-BOOBh0R-.js"
+  ],
+  "resources/js/layouts/auth/Default.jsx": [
+    "/build/assets/index-Ds8IJ8gz.js",
+    "/build/assets/Demo-BW6MTgmx.jpg"
+  ],
+  "resources/js/layouts/user/Footer/Footer.jsx": [
+    "/build/assets/index-D7V5_Wy3.js"
+  ],
+  "resources/js/layouts/user/index.jsx": [
+    "/build/assets/index-D7V5_Wy3.js"
+  ],
+  "resources/js/layouts/user/routes.jsx": [
+    "/build/assets/index-D7V5_Wy3.js"
+  ],
+  "resources/js/ssr.jsx": [],
+  "resources/js/theme/additions/card/card.js": [],
+  "resources/js/theme/components/badge.jsx": [],
+  "resources/js/theme/components/button.jsx": [],
+  "resources/js/theme/components/input.jsx": [],
+  "resources/js/theme/components/link.jsx": [],
+  "resources/js/theme/components/progress.jsx": [],
+  "resources/js/theme/components/slider.jsx": [],
+  "resources/js/theme/components/switch.jsx": [],
+  "resources/js/theme/components/textarea.jsx": [],
+  "resources/js/theme/foundations/breakpoints.jsx": [],
+  "resources/js/theme/styles.jsx": [],
+  "resources/js/theme/theme.jsx": [],
+  "resources/js/variables/axiosConfig.js": [],
+  "resources/js/variables/statics.js": [
+    "/build/assets/statics-GI0iJz3l.js"
+  ]
+}
