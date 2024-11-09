@@ -157,7 +157,7 @@ class VendorRequestController extends Controller
         ]);
 
         VendorRequest::create([
-            'user_id' => $user->id
+            'user_id' => $vendor->id
         ]);
 
         UserRole::create([
@@ -167,7 +167,7 @@ class VendorRequestController extends Controller
         ]);
 
         DB::table('user_vendor')->updateOrInsert([
-            'user_id' => $user->id, 
+            'user_id' => $vendor->id, 
             'vendor_id' => $data['dbms_id']
         ]);
 

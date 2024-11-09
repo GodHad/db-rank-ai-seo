@@ -41,7 +41,7 @@ export default function CategoryModal({ category, onopen, handleOnClose, handleO
         onClose()
         handleOnUpdate()
         toast({
-          title: "Create new category successfully.",
+          title: "Create category successfully.",
           position: 'top-right',
           status: "success",
           insert: "top",
@@ -50,7 +50,7 @@ export default function CategoryModal({ category, onopen, handleOnClose, handleO
         })
       } else {
         toast({
-          title: "Failed to create new category.",
+          title: "Failed to create category.",
           position: 'top-right',
           status: "error",
           insert: "top",
@@ -64,7 +64,7 @@ export default function CategoryModal({ category, onopen, handleOnClose, handleO
         onClose()
         handleOnUpdate()
         toast({
-          title: "Update new category successfully.",
+          title: "Update category successfully.",
           position: 'top-right',
           status: "success",
           insert: "top",

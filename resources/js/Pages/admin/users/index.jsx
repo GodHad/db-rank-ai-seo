@@ -59,6 +59,7 @@ const initialVendor = {
     job_title: '',
     company: '',
     approved: 0,
+    author: 0,
     userRoleId: null,
     vendor: null
 }
