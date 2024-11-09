@@ -176,7 +176,7 @@ export default function Chat({ content }) {
                     mx="auto"
                     w={{ base: '100%', md: '100%', xl: '100%' }}
                     minH={{ base: '75vh', '2xl': '85vh' }}
-                    maxW={{ base: '75vh', '2xl': '85vh' }}
+                    maxW={{ base: '85vh', '2xl': '100vh' }}
                     border={'1px solid'}
                     borderColor={borderColor}
                     borderRadius={'lg'}
@@ -280,23 +280,25 @@ export default function Chat({ content }) {
                             )}
                         </Flex>
                     </Flex>
-                    <SimpleGrid columns={{lg: 4, md: 3, '2sm': 2, base: 1}} spacing={4} px={2}>
-                        {suggestedQuestions && suggestedQuestions.map(question => (
-                            <Text 
-                                key={question.id}
-                                border="1px solid"
-                                borderColor={borderColor}
-                                borderRadius="14px"
-                                p={'10px'}
-                                cursor={'pointer'}
-                                onClick={() => handleClickQuestion(question.question)}
-                                position={'relative'}
-                                zIndex={1000}
-                            >
-                                {question.question}
-                            </Text>
-                        ))}
-                    </SimpleGrid>
+                    {suggestedQuestions &&
+                        <SimpleGrid columns={{ md: Math.min(3, suggestedQuestions.length), '2sm': Math.min(2, suggestedQuestions.length), base: 1 }} spacing={4} px={2}>
+                            {suggestedQuestions.map(question => (
+                                <Text
+                                    key={question.id}
+                                    border="1px solid"
+                                    borderColor={borderColor}
+                                    borderRadius="14px"
+                                    p={'10px'}
+                                    cursor={'pointer'}
+                                    onClick={() => handleClickQuestion(question.question)}
+                                    position={'relative'}
+                                    zIndex={1000}
+                                >
+                                    {question.question}
+                                </Text>
+                            ))}
+                        </SimpleGrid>
+                    }
                     {/* Chat Input */}
                     <Text textColor={secondaryText} textAlign={'center'}>Sometimes I am not smart enough. I am still learning.</Text>
                     <Box bottom={0} width={'full'}>
