@@ -13,6 +13,7 @@
     <meta name="twitter:site" content="DB Rank AI"/>
     <meta property="og:site_name" content="DB Rank AI"/>
     <meta name="twitter:card" content="summary"/>
+    <meta property="og:type" content="website" />
     @viteReactRefresh
     @vite('resources/js/app.jsx')
     @inertiaHead
