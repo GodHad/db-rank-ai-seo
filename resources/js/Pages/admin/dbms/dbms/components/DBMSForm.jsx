@@ -19,6 +19,7 @@ import { CustomMultiSelect } from '@/components/form/CustomMultiSelect';
 import { CustomInput } from '@/components/form/CustomInput';
 import { APP_URL } from '@/variables/statics';
 import { initialVendor } from '..';
+import 'ckeditor5/ckeditor5.css';
 
 export default function VendorForm({ vendor, categories, setOpenedPage }) {
     const toast = useToast();
