@@ -101,9 +101,12 @@ export default function DBMS({ selectedDBMS, slug }) {
         }
     }, [selectedDBMS])
 
-    useEffect(() => {
-
-    }, [editing])
+    const handleCloseEditing = () => {
+        if (editing === true) {
+            window.location.reload()
+            setEditing(false)
+        }
+    }
 
     return (
         <UserLayout>
@@ -155,7 +158,7 @@ export default function DBMS({ selectedDBMS, slug }) {
                             </ReactLink>
                         </Flex>
                     </Flex>
-                    {editing ? <VendorForm vendor={selectedDBMS} setOpenedPage={setEditing} categories={categories} /> :
+                    {editing ? <VendorForm vendor={selectedDBMS} setOpenedPage={handleCloseEditing} categories={categories} /> :
                         <>
                             {selectedDBMS ?
                                 <>
