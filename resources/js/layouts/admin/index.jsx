@@ -1,5 +1,4 @@
 import { Portal, Box, useDisclosure } from '@chakra-ui/react';
-import Footer from '@/components/footer/FooterAdmin';
 import Navbar from '@/components/navbar/NavbarAdmin';
 import Sidebar from '@/components/sidebar/Sidebar';
 import { SidebarContext } from '@/contexts/SidebarContext';
@@ -132,9 +131,6 @@ export default function Dashboard(props) {
               pt="50px"
             >
               {children}
-            </Box>
-            <Box>
-              <Footer />
             </Box>
           </Box>
         </SidebarContext.Provider>

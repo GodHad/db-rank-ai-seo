@@ -3,7 +3,6 @@ import { APP_URL } from "../../../variables/statics"
 import { Helmet } from "react-helmet"
 
 export default ({ content, title }) => {
-    console.log(content, title)
     return (
         <>
             <Helmet>

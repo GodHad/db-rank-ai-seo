@@ -12,9 +12,10 @@ import {
   FormLabel,
   Input,
   Text,
-  useToast
+  useToast,
+  useDisclosure,
+  useColorModeValue
 } from '@chakra-ui/react'
-import { useDisclosure, useColorModeValue } from '@chakra-ui/react'
 import axios from 'axios';
 
 export default function CategoryModal({ category, onopen, handleOnClose, handleOnUpdate }) {

@@ -1,10 +1,6 @@
 import React from "react";
 
-// Chakra imports
-import { Flex, Box, Text } from "@chakra-ui/react";
-
-// Custom components
-import { HorizonLogo } from "../../icons/Icons";
+import { Flex, Box } from "@chakra-ui/react";
 import { HSeparator } from "../../separator/Separator";
 import logo from '../../../assets/img/auth/logo.png';
 import logo_black_text from '../../../assets/img/auth/logo_black_letter.png';
@@ -13,7 +9,6 @@ import { Link } from "react-router-dom";
 
 export function SidebarBrand() {
   const { colorMode } = useColorMode();
-  //   Chakra color mode
   return (
     <Flex align='center' direction='column'>
       <Link to={"/"}>
