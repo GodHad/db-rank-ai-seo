@@ -1,7 +1,7 @@
 import './bootstrap';
 import '@/assets/css/App.css';
-import { createRoot } from 'react-dom/client';
-// import { hydrateRoot } from 'react-dom/client';
+// import { createRoot } from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/inertia-react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { InertiaProgress } from '@inertiajs/progress';
@@ -22,8 +22,8 @@ createInertiaApp({
     title: (title) => `${appName} | ${title}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}/index.jsx`, import.meta.glob('./Pages/**/*.jsx')),
     setup({ el, App, props }) {
-        const root = createRoot(el);
-        // const root = hydrateRoot(el);
+        // const root = createRoot(el);
+        const root = hydrateRoot(el);
 
         root.render(
             <QueryClientProvider client={queryClient}>
