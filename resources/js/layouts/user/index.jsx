@@ -110,17 +110,15 @@ export default function UserLayout(props) {
         transitionProperty="top, bottom, width"
         transitionTimingFunction="linear, linear, ease"
       >
-        {typeof window !== 'undefined' &&
-          <Navbar
-            onOpen={onOpen}
-            logoText={'DB Rank AI'}
-            brandText={getActiveRoute(routes)}
-            secondary={getActiveNavbar(routes)}
-            message={getActiveNavbarText(routes)}
-            fixed={fixed}
-            {...rest}
-          />
-        }
+        <Navbar
+          onOpen={onOpen}
+          logoText={'DB Rank AI'}
+          brandText={getActiveRoute(routes)}
+          secondary={getActiveNavbar(routes)}
+          message={getActiveNavbarText(routes)}
+          fixed={fixed}
+          {...rest}
+        />
         <Box
           mx="auto"
           p={{ base: '20px', md: '30px' }}

@@ -142,7 +142,7 @@ export default function Navbar(props) {
               href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
             />
 
-            {topBanners &&
+            {typeof window !== 'undefined' && topBanners &&
               <Slider {...settings} ref={(slider) => setSlider(slider)}>
                 {topBanners.map((image, index) => (
                   <Link href={image.link} target='_blank' key={image.id + image.url} style={{ display: 'flex', justifyContent: 'center' }}>
