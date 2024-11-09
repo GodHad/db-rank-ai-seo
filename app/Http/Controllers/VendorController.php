@@ -300,8 +300,8 @@ class VendorController extends Controller
                 $vendor->banner = $bannerPath;
             }
 
-            if ($data['meta_title']) $vendor->meta_title = $data['meta_title'];
-            if ($data['meta_description']) $vendor->meta_description = $data['meta_description'];
+            if (isset($data['meta_title'])) $vendor->meta_title = $data['meta_title'];
+            if (isset($data['meta_description'])) $vendor->meta_description = $data['meta_description'];
 
             if ($request->hasFile('og_graph_file')) {
                 if ($vendor->og_graph_image) Storage::disk('public')->delete($vendor->og_graph_image);

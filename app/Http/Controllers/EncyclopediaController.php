@@ -70,8 +70,8 @@ class EncyclopediaController extends Controller
         
         $encyclopedia->title = $data['title'];
         $encyclopedia->content = $data['content'];
-        if ($data['meta_title']) $encyclopedia->meta_title = $data['meta_title'];
-        if ($data['meta_description']) $encyclopedia->meta_description = $data['meta_description'];
+        if (isset($data['meta_title'])) $encyclopedia->meta_title = $data['meta_title'];
+        if (isset($data['meta_description'])) $encyclopedia->meta_description = $data['meta_description'];
 
         if ($request->hasFile('og_graph_file')) {
             if ($encyclopedia->og_graph_image) Storage::disk('public')->delete($encyclopedia->og_graph_image);

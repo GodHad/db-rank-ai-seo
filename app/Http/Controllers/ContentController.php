@@ -54,8 +54,8 @@ class ContentController extends Controller
         }
 
         $content->content = $data['content'];
-        if ($data['meta_title']) $content->meta_title = $data['meta_title'];
-        if ($data['meta_description']) $content->meta_description = $data['meta_description'];
+        if (isset($data['meta_title'])) $content->meta_title = $data['meta_title'];
+        if (isset($data['meta_description'])) $content->meta_description = $data['meta_description'];
         $content->save();
 
         return response()->json(['success' => true]);
