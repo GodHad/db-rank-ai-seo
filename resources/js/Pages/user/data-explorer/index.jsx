@@ -342,7 +342,7 @@ export default function Chat({ content }) {
                                 borderRadius="45px"
                                 ms="auto"
                                 w={{ base: '160px', md: '210px' }}
-                                bg='linear-gradient(15.46deg, #4A25E1 26.3%, #7B5AFF 86.4%) !important'
+                                bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important'
                                 h="54px"
                                 _hover={{
                                     boxShadow:
@@ -355,7 +355,7 @@ export default function Chat({ content }) {
                                 onClick={handleTranslate}
                                 isLoading={loading ? true : false}
                             >
-                                Submit
+                                Send
                             </Button>
                         </Flex>
                     </Box>
