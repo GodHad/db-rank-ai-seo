@@ -14,7 +14,7 @@ import {
   useColorModeValue,
   BreadcrumbLink,
 } from '@chakra-ui/react';
-import { useState, useEffect, useContext, useMemo, useRef } from 'react'
+import { useState, useEffect, useContext, useMemo } from 'react'
 import { Select as MultiSelect } from 'chakra-react-select';
 import Card from '@/components/card/Card';
 import { Link as ReactLink } from '@inertiajs/react';
@@ -25,46 +25,9 @@ import { useQuery } from 'react-query';
 import { headers } from '../DBMS';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { Helmet } from 'react-helmet';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import {
-  ClassicEditor,
-  Essentials,
-  Autoformat,
-  BlockQuote,
-  Bold,
-  CloudServices,
-  Code,
-  CodeBlock,
-  Heading,
-  HorizontalLine,
-  Image,
-  ImageToolbar,
-  ImageUpload,
-  Base64UploadAdapter,
-  Italic,
-  Link,
-  List,
-  Markdown,
-  Mention,
-  Paragraph,
-  MediaEmbed,
-  SourceEditing,
-  Strikethrough,
-  Table,
-  TableToolbar,
-  TableColumnResize,
-  TableProperties,
-  TextTransformation,
-  TodoList,
-  ImageCaption,
-  ImageInsert,
-  ImageResize,
-  ImageStyle,
-} from 'ckeditor5'
-import 'ckeditor5/ckeditor5.css';
 import UserLayout from '@/layouts/user';
 import { Inertia } from '@inertiajs/inertia';
-import SeoHeader from '../../../components/SeoHeader';
+import CustomCKEditor from '../../../components/CustomCKEditor';
 
 export default function CompareDBMS({ slug }) {
   const dbmsNames = decodeURIComponent(slug).split(';');
@@ -72,7 +35,7 @@ export default function CompareDBMS({ slug }) {
 
   const { data: _vendors } = useQuery(
     'user_vendors',
-    getVendors,
+    () => getVendors(' '),
     {
       staleTime: 300000,
       enabled: vendors.length === 0,
@@ -97,34 +60,26 @@ export default function CompareDBMS({ slug }) {
   const [data, setData] = useState(null);
   const [options, setOptions] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState(null)
-  const editorRefs = useRef([]);
-  const [editorData, setEditorData] = useState([]);
 
   useEffect(() => {
     setData(selectedDBMS.map(dbms => {
       const primaryRanking = dbms.primary_ranking.split(' ');
+      console.log(dbms)
       return {
         ...dbms,
         overall_ranking: `
-          <span style="margin-right: 8px">Overall Avg. Score:</span> ${dbms.overall_avg_score}<br> 
+          <span style="margin-right: 8px">Overall Score:</span> ${dbms.overall_avg_score.toFixed(2)}<br> 
           <span style="margin-right: 8px">Rank:</span> #${dbms.overall_ranking} Overall<br>
-          ${dbms.primary_category.map((category, index) => (`<span style="margin-right: 8px; opacity: 0">Rank: </span> #${primaryRanking[index]} ${category.shortname}<br>`))}
+          ${dbms.primary_category.map((category, index) => (`<span style="margin-right: 8px; opacity: 0">Rank: </span> #${primaryRanking[index]} ${category.shortname}`)).join('<br />')}
       `,
-        primary_category: dbms.primary_category.map(category => category.title).join('\n'),
-        secondary_category: dbms.secondary_category.map(category => category.title).join('\n'),
+        primary_category: dbms.primary_category.map(category => category.title).join('<br />'),
+        secondary_category: dbms.secondary_category.map(category => category.title).join('<br />'),
       }
     }))
 
     setSelectedOptions(selectedDBMS.map(dbms => ({ label: dbms.db_name, value: dbms.id })))
 
-    const updatedData = selectedDBMS.map(dbms => dbms.description || '');
-    setEditorData(updatedData);
   }, [selectedDBMS])
-
-  const handleEditorReady = (editor, index) => {
-    editorRefs.current[index] = editor;
-    editor.setData(editorData[index]);
-  };
 
   useEffect(() => {
     if (vendors) setOptions(vendors.map(vendor => ({ label: vendor.db_name, value: vendor.id })))
@@ -258,73 +213,24 @@ export default function CompareDBMS({ slug }) {
                     >
                       {header.name}
                     </Th>
-                    {data && data.length > 0 ? data.map((dbms, index) => (
-                      <Td
-                        key={dbms.id}
-                        pe="10px"
-                        borderColor={borderColor}
-                        width={'300px'}
-                      >
-                        {header.key === 'description' ?
-                          <CKEditor
-                            key={`editor-${dbms.id}`}
-                            editor={ClassicEditor}
-                            config={{
-                              plugins: [
-                                Autoformat,
-                                BlockQuote,
-                                Bold,
-                                CloudServices,
-                                Code,
-                                CodeBlock,
-                                Essentials,
-                                Heading,
-                                HorizontalLine,
-                                Image,
-                                ImageCaption,
-                                ImageInsert,
-                                ImageResize,
-                                ImageStyle,
-                                ImageToolbar,
-                                ImageUpload,
-                                MediaEmbed,
-                                Base64UploadAdapter,
-                                Italic,
-                                Link,
-                                List,
-                                Markdown,
-                                Mention,
-                                Paragraph,
-                                SourceEditing,
-                                Strikethrough,
-                                Table,
-                                TableToolbar,
-                                TableProperties,
-                                TableColumnResize,
-                                TextTransformation,
-                                TodoList,
-                              ],
-                              table: {
-                                contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties'],
-                              },
-                              isReadOnly: true,
-                              initialData: data[header.key]
-                            }}
-                            data={data[header.key] || ''}
-                            disabled={true}
-                            onReady={(editor) => handleEditorReady(editor, index)}
-                          />
-                          :
+                    {data && data.length > 0 ? data.map((dbms, index) => {
+                      return (
+                        <Td
+                          key={dbms.id}
+                          pe="10px"
+                          borderColor={borderColor}
+                          width={'300px'}
+                        >
                           <Text
                             color={textColor}
                             mb="4px"
                             fontWeight="500"
                             lineHeight="120%"
-                            dangerouslySetInnerHTML={{ __html: header.yes ? data[header.key] ? 'Yes' : 'No' : data[header.key] }}
+                            dangerouslySetInnerHTML={{ __html: dbms[header.key] }}
                           />
-                        }
-                      </Td>
-                    )) : (
+                        </Td>
+                      )
+                    }) : (
                       <Td
                         pe="10px"
                         borderColor={borderColor}
@@ -336,6 +242,7 @@ export default function CompareDBMS({ slug }) {
                   </Tr>
                 ))}
                 <Tr>
+                  <Td></Td>
                   {data && data.length > 0 ? data.map((dbms, index) => (
                     <Td
                       key={dbms.id}
@@ -343,53 +250,9 @@ export default function CompareDBMS({ slug }) {
                       borderColor={borderColor}
                       width={'300px'}
                       className='no-border-editor'
-                      colSpan={2}
                     >
-                      <CKEditor
-                        editor={ClassicEditor}
-                        config={{
-                          plugins: [
-                            Autoformat,
-                            BlockQuote,
-                            Bold,
-                            CloudServices,
-                            Code,
-                            CodeBlock,
-                            Essentials,
-                            Heading,
-                            HorizontalLine,
-                            Image,
-                            ImageCaption,
-                            ImageInsert,
-                            ImageResize,
-                            ImageStyle,
-                            ImageToolbar,
-                            ImageUpload,
-                            MediaEmbed,
-                            Base64UploadAdapter,
-                            Italic,
-                            Link,
-                            List,
-                            Markdown,
-                            Mention,
-                            Paragraph,
-                            SourceEditing,
-                            Strikethrough,
-                            Table,
-                            TableToolbar,
-                            TableProperties,
-                            TableColumnResize,
-                            TextTransformation,
-                            TodoList,
-                          ],
-                          table: {
-                            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties'],
-                          },
-                          isReadOnly: true,
-                          initialData: dbms.extra_content
-                        }}
-                        disabled={true}
-                      /></Td>))
+                      <CustomCKEditor content={dbms.extra_content} />
+                    </Td>))
                     : <Td colSpan={2}><Skeleton width={'300px'} height={"30px"} borderRadius={"12px"} /></Td>
                   }
                 </Tr>

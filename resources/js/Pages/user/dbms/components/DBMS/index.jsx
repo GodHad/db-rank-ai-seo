@@ -17,20 +17,17 @@ import {
     IconButton,
     useBreakpointValue,
 } from '@chakra-ui/react';
-import { useState, useEffect, useContext, useMemo } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { MdCheckCircle, MdOutlineRemoveCircle, MdVisibility, MdEdit } from 'react-icons/md';
 import Card from '@/components/card/Card';
 import { Link as ReactLink } from '@inertiajs/react';
-import { DBMSContext } from '@/contexts/DBMSContext';
 import { APP_URL, generateSlug } from '@/variables/statics';
-import { getVendors } from '@/Pages/admin/dbms/dbms/requests/use-request';
 import { useQuery } from 'react-query';
 import { Skeleton } from '@chakra-ui/skeleton';
 import { UserContext } from '@/contexts/UserContext';
 import VendorForm from '@/Pages/admin/dbms/dbms/components/DBMSForm';
 import { getCategories } from '@/Pages/admin/dbms/dbms/requests/use-request';
 import UserLayout from '@/layouts/user';
-import { Inertia } from '@inertiajs/inertia';
 import SeoHeader from '../../../components/SeoHeader';
 import CustomCKEditor from '../../../components/CustomCKEditor';
 
@@ -84,6 +81,26 @@ export default function DBMS({ selectedDBMS, slug }) {
     const compareText = useBreakpointValue({ base: 'Compare', md: 'Compare with others' });
 
     const [editing, setEditing] = useState(false);
+
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        if (selectedDBMS) {
+            setData(prev => {
+                const primaryRanking = selectedDBMS.primary_ranking.split(' ');
+                return {
+                    ...selectedDBMS,
+                    overall_ranking: `
+                    <span style="margin-right: 8px; line-height: 36px;">Score:</span> ${selectedDBMS.overall_avg_score.toFixed(2)}<br> 
+                    <span style="margin-right: 8px; line-height: 36px;">Rank:</span> #${selectedDBMS.overall_ranking} Overall<br>
+                    ${selectedDBMS.primary_category.map((category, index) => (`<span style="margin-right: 8px; line-height: 36px; opacity: 0">Rank: </span> #${primaryRanking[index]} ${category.shortname}<br>`)).join(' ')}
+                `,
+                    primary_category: selectedDBMS.primary_category.map(category => category.title).join(', '),
+                    secondary_category: selectedDBMS.secondary_category.map(category => category.title).join(', '),
+                }
+            })
+        }
+    }, [selectedDBMS])
 
     return (
         <UserLayout>
@@ -248,14 +265,14 @@ export default function DBMS({ selectedDBMS, slug }) {
                                                         {selectedDBMS.profile_views} views
                                                     </Text>
                                                 </Flex>
-                                                {selectedDBMS &&
+                                                {data &&
                                                     <Text
                                                         color={textColor}
                                                         fontWeight="400"
                                                         lineHeight="120%"
                                                         display={'inline'}
                                                         fontSize={{ md: '16px', '2sm': '14px', sm: '12px' }}
-                                                        dangerouslySetInnerHTML={{ __html: selectedDBMS.overall_ranking }}
+                                                        dangerouslySetInnerHTML={{ __html: data.overall_ranking }}
                                                     />
                                                 }
                                             </Flex>
@@ -364,9 +381,9 @@ export default function DBMS({ selectedDBMS, slug }) {
                                                 >
                                                     {header.name}
                                                 </Th>
-                                                {selectedDBMS ? (
+                                                {data ? (
                                                     <Td
-                                                        key={selectedDBMS.id}
+                                                        key={data.id}
                                                         pe="10px"
                                                         borderColor={borderColor}
                                                         width={'300px'}
@@ -376,7 +393,7 @@ export default function DBMS({ selectedDBMS, slug }) {
                                                             mb="4px"
                                                             fontWeight="500"
                                                             lineHeight="120%"
-                                                            dangerouslySetInnerHTML={{ __html: header.yes ? selectedDBMS[header.key] ? 'Yes' : 'No' : selectedDBMS[header.key] }}
+                                                            dangerouslySetInnerHTML={{ __html: data[header.key] }}
                                                         />
                                                     </Td>
                                                 ) : (
@@ -391,7 +408,7 @@ export default function DBMS({ selectedDBMS, slug }) {
                                             </Tr>
                                         ))}
                                         <Tr>
-                                            {selectedDBMS ?
+                                            {data ?
                                                 <Td
                                                     pe="10px"
                                                     borderColor={borderColor}
@@ -399,7 +416,7 @@ export default function DBMS({ selectedDBMS, slug }) {
                                                     className='no-border-editor'
                                                     colSpan={2}
                                                 >
-                                                    {selectedDBMS && selectedDBMS.extra_content && <CustomCKEditor content={selectedDBMS.extra_content} />}
+                                                    {data.extra_content && <CustomCKEditor content={data.extra_content} />}
                                                 </Td>
                                                 : <Td colSpan={2}><Skeleton w={'full'} maxW={'600px'} height={"30px"} borderRadius={"12px"} /></Td>
                                             }

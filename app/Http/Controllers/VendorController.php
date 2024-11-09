@@ -422,6 +422,58 @@ class VendorController extends Controller
         $vendor = $this->getDBMSBySlug($slug);
 
         if (!$vendor) return Inertia::render('NotFound');
+
+        $now = Carbon::now();
+
+        $currentMonth = $now->copy()->subMonthNoOverflow();
+        $currentMonthStart = $currentMonth->startOfMonth()->format('Y-m-d');
+        $currentMonthEnd = $currentMonth->endOfMonth()->format('Y-m-d');
+
+        $previousMonth = $currentMonth->copy()->subMonthNoOverflow();
+        $previousMonthStart = $previousMonth->startOfMonth()->format('Y-m-d');
+        $previousMonthEnd = $previousMonth->endOfMonth()->format('Y-m-d');
+
+        $previousYear = $now->copy()->subYearNoOverflow();
+        $previousYearStart = $previousYear->startOfMonth()->format('Y-m-d');
+        $previousYearEnd = $previousYear->endOfMonth()->format('Y-m-d');
+
+        function getAverageTrends($startDate, $endDate) {
+            return Trend::whereBetween('date', [$startDate, $endDate])
+                ->selectRaw('vendor_id, AVG(score) as average_score')
+                ->groupBy('vendor_id')
+                ->orderBy('average_score', 'desc')
+                ->get();
+        }
+
+        $currentMonthTrends = getAverageTrends($currentMonthStart, $currentMonthEnd);
+        $previousMonthTrends = getAverageTrends($previousMonthStart, $previousMonthEnd);
+        $previousYearTrends = getAverageTrends($previousYearStart, $previousYearEnd);
+
+        $rank = 1;
+        foreach ($currentMonthTrends as $trend) {
+            if ($vendor->id === $trend->vendor_id) {
+                $vendor->overall_ranking = $rank ++;
+                $vendor->overall_avg_score = (float)$trend->average_score;
+            }
+        }
+
+        $rank = 1;
+        foreach ($previousMonthTrends as $trend) {
+            if ($vendor->id === $trend->vendor_id) {
+                $vendor->prev_month_overall_ranking = $rank ++;
+                $vendor->prev_month_overall_avg_score = (float)$trend->average_score;
+            }
+        }
+
+        $rank = 1;
+        foreach ($previousYearTrends as $trend) {
+            if ($vendor->id === $trend->vendor_id) {
+                $vendor->prev_year_overall_ranking = $rank ++;
+                $vendor->prev_year_overall_avg_score = (float)$trend->average_score;
+                break;
+            }
+        }
+
         return Inertia::render('user/dbms/components/DBMS', ['slug' => $slug, 'selectedDBMS' => $vendor]);
     }
 

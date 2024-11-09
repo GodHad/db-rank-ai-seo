@@ -113,7 +113,6 @@ body.chakra-ui-light .ck-editor__editable_inline {
 
 body.chakra-ui-dark .ck-editor__editable_inline {
   background-color: transparent !important;
-  border: 1px solid rgba(135, 140, 189, 0.3) !important;
   color: #ffffff;
 }
 

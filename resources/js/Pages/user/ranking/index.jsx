@@ -59,6 +59,7 @@ export default function Ranking({ content, route }) {
         { bg: "secondaryGray.300" },
         { bg: "whiteAlpha.100" }
     );
+    const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 
     const [showingCategory, setShowingCategory] = useState(0);
 
@@ -94,7 +95,12 @@ export default function Ranking({ content, route }) {
             >
                 <Sidebar categories={options} showingCategory={showingCategory} setShowingCategory={setShowingCategory} />
                 <Flex justifyContent={"flex-end"}>
-                    <Box width={{ xl: 'calc(100% - 290px)', base: '100%' }} float={"right"} position={'relative'} zIndex={10} overflow={'auto'}>
+                    <Box
+                        width={{ xl: 'calc(100% - 290px)', base: '100%' }}
+                        float={"right"}
+                        position={'relative'}
+                        zIndex={10}
+                        overflow={'auto'}>
                         <Breadcrumb px="25px">
                             <BreadcrumbItem color={secondaryText} fontSize='sm' mb='5px'>
                                 <ReactLink href='/'>
@@ -156,8 +162,28 @@ export default function Ranking({ content, route }) {
                         <Box px={'25px'}>
                             {content && content.content && <CustomCKEditor content={content.content || ''} />}
                         </Box>
-                        {route === 'table-view' && <RankTable data={data} vendors={vendors} isLoadingCategory={isLoadingCategory} categories={categories} />}
-                        {(route === 'chart-view' && typeof window !== 'undefined') && <RankChart showingCategory={options[showingCategory].id} country={country} />}
+                        <Box
+                            width={'full'}
+                            overflow={'auto'}
+                            sx={{
+                                '&::-webkit-scrollbar': {
+                                    width: '8px',
+                                    height: '8px',
+                                    backgroundColor: 'transparent',
+                                },
+                                '&::-webkit-scrollbar-thumb': {
+                                    backgroundColor: borderColor,
+                                    borderRadius: '20px',
+                                },
+                                '&::-webkit-scrollbar-track': {
+                                    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                                    borderRadius: '20px',
+                                },
+                            }}
+                        >
+                            {route === 'table-view' && <RankTable data={data} vendors={vendors} isLoadingCategory={isLoadingCategory} categories={categories} />}
+                            {(route === 'chart-view' && typeof window !== 'undefined') && <RankChart showingCategory={options[showingCategory].id} country={country} />}
+                        </Box>
                     </Box>
                 </Flex>
             </Card>

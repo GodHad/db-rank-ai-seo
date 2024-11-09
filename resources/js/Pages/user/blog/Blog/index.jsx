@@ -88,7 +88,6 @@ export default ({ blog, route }) => {
                                             isRound
                                             size="md"
                                             ml={2}
-                                            onClick={() => setEditing(true)}
                                         />
                                     </ReactLink>
                                 ) : <></>}

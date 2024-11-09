@@ -34,6 +34,61 @@ export default function BlogForm({ blog, setOpenedPage }) {
 
     const featuredImagesRef = useRef(null);
 
+    const [Editor, setEditor] = useState(null);
+    const [editorLoaded, setEditorLoaded] = useState(false);
+
+    useEffect(() => {
+        // Ensure this only runs in the browser
+        if (typeof window !== "undefined") {
+            // Dynamically import CKEditor and all plugins
+            Promise.all([
+                import('@ckeditor/ckeditor5-react').then(module => module.CKEditor),
+                import('ckeditor5').then(ckModules => ({
+                    ClassicEditor: ckModules.ClassicEditor,
+                    Essentials: ckModules.Essentials,
+                    Alignment: ckModules.Alignment,
+                    Autoformat: ckModules.Autoformat,
+                    BlockQuote: ckModules.BlockQuote,
+                    Bold: ckModules.Bold,
+                    CloudServices: ckModules.CloudServices,
+                    Code: ckModules.Code,
+                    CodeBlock: ckModules.CodeBlock,
+                    Heading: ckModules.Heading,
+                    HorizontalLine: ckModules.HorizontalLine,
+                    Image: ckModules.Image,
+                    ImageToolbar: ckModules.ImageToolbar,
+                    ImageUpload: ckModules.ImageUpload,
+                    Base64UploadAdapter: ckModules.Base64UploadAdapter,
+                    Italic: ckModules.Italic,
+                    Link: ckModules.Link,
+                    List: ckModules.List,
+                    Mention: ckModules.Mention,
+                    Paragraph: ckModules.Paragraph,
+                    MediaEmbed: ckModules.MediaEmbed,
+                    SourceEditing: ckModules.SourceEditing,
+                    Strikethrough: ckModules.Strikethrough,
+                    Underline: ckModules.Underline,
+                    Table: ckModules.Table,
+                    TableToolbar: ckModules.TableToolbar,
+                    TableColumnResize: ckModules.TableColumnResize,
+                    TableProperties: ckModules.TableProperties,
+                    TextTransformation: ckModules.TextTransformation,
+                    TodoList: ckModules.TodoList,
+                    ImageCaption: ckModules.ImageCaption,
+                    ImageInsert: ckModules.ImageInsert,
+                    ImageResize: ckModules.ImageResize,
+                    ImageStyle: ckModules.ImageStyle,
+                }))
+            ]).then(([CKEditorComponent, ckModules]) => {
+                setEditor(() => ({
+                    CKEditor: CKEditorComponent,
+                    ...ckModules,
+                }));
+                setEditorLoaded(true);
+            });
+        }
+    }, []);
+
     const {
         id,
         title,
@@ -242,61 +297,6 @@ export default function BlogForm({ blog, setOpenedPage }) {
     if (isLoadingCategories || isLoadingTags || !bCategories || !bTags) {
         return <Flex justifyContent={'center'} minH="300px" alignItems="center"><Spinner /></Flex>
     }
-
-    const [Editor, setEditor] = useState(null);
-    const [editorLoaded, setEditorLoaded] = useState(false);
-
-    useEffect(() => {
-        // Ensure this only runs in the browser
-        if (typeof window !== "undefined") {
-            // Dynamically import CKEditor and all plugins
-            Promise.all([
-                import('@ckeditor/ckeditor5-react').then(module => module.CKEditor),
-                import('ckeditor5').then(ckModules => ({
-                    ClassicEditor: ckModules.ClassicEditor,
-                    Essentials: ckModules.Essentials,
-                    Alignment: ckModules.Alignment,
-                    Autoformat: ckModules.Autoformat,
-                    BlockQuote: ckModules.BlockQuote,
-                    Bold: ckModules.Bold,
-                    CloudServices: ckModules.CloudServices,
-                    Code: ckModules.Code,
-                    CodeBlock: ckModules.CodeBlock,
-                    Heading: ckModules.Heading,
-                    HorizontalLine: ckModules.HorizontalLine,
-                    Image: ckModules.Image,
-                    ImageToolbar: ckModules.ImageToolbar,
-                    ImageUpload: ckModules.ImageUpload,
-                    Base64UploadAdapter: ckModules.Base64UploadAdapter,
-                    Italic: ckModules.Italic,
-                    Link: ckModules.Link,
-                    List: ckModules.List,
-                    Mention: ckModules.Mention,
-                    Paragraph: ckModules.Paragraph,
-                    MediaEmbed: ckModules.MediaEmbed,
-                    SourceEditing: ckModules.SourceEditing,
-                    Strikethrough: ckModules.Strikethrough,
-                    Underline: ckModules.Underline,
-                    Table: ckModules.Table,
-                    TableToolbar: ckModules.TableToolbar,
-                    TableColumnResize: ckModules.TableColumnResize,
-                    TableProperties: ckModules.TableProperties,
-                    TextTransformation: ckModules.TextTransformation,
-                    TodoList: ckModules.TodoList,
-                    ImageCaption: ckModules.ImageCaption,
-                    ImageInsert: ckModules.ImageInsert,
-                    ImageResize: ckModules.ImageResize,
-                    ImageStyle: ckModules.ImageStyle,
-                }))
-            ]).then(([CKEditorComponent, ckModules]) => {
-                setEditor(() => ({
-                    CKEditor: CKEditorComponent,
-                    ...ckModules,
-                }));
-                setEditorLoaded(true);
-            });
-        }
-    }, []);
 
     return (
         <Box p={"20px"}>
