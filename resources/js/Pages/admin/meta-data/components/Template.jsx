@@ -396,7 +396,7 @@ export default function Template({ page }) {
                         onChange={handleSingleFileChange}
                     />
                 </Box>
-                <Button variant={"brand"} mt={3} mr={3} onClick={handleSubmit}>
+                <Button bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important' color={'white'} mt={3} mr={3} onClick={handleSubmit}>
                     Save
                 </Button>
             </Box>

@@ -294,7 +294,7 @@ export default function SponsorForm({ sponsor, setOpenedPage }) {
                 </FormControl>
 
             </FormControl>
-            <Button variant={"brand"} mt={3} mr={3} onClick={handleSponsor}>
+            <Button bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important' color={'white'} mt={3} mr={3} onClick={handleSponsor}>
                 Save
             </Button>
             <Button mt={3} onClick={() => setOpenedPage(0)}>Cancel</Button>

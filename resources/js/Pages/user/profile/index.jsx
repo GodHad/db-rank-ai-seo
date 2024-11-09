@@ -14,23 +14,20 @@ import {
     useColorModeValue,
     useToast
 } from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "@inertiajs/react";
 import Card from "@/components/card/Card";
-import { UserContext } from "@/contexts/UserContext";
 import { updateVendor } from "@/Pages/admin/users/requests/use-request";
 import { useQueryClient, useMutation } from "react-query";
 import UserLayout from '@/layouts/user';
 
-export default function Overview() {
+export default function Overview({ user }) {
     const toast = useToast()
     const queryClient = useQueryClient();
     const textColor = useColorModeValue('secondaryGray.900', 'white');
     const secondaryText = useColorModeValue('gray.700', 'white');
     const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
-
-    const { user } = useContext(UserContext);
 
     const [form, setForm] = useState({
         name: '',
@@ -299,7 +296,7 @@ export default function Overview() {
                                 </FormControl>
                             </Grid>
                             <Box mt={5} py={5} borderTopWidth={1} borderColor={borderColor}>
-                                <Button variant={'brand'} onClick={handleUpdate}>Update</Button>
+                                <Button bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important' onClick={handleUpdate}>Update</Button>
                             </Box>
                         </Box>
                     </Box>

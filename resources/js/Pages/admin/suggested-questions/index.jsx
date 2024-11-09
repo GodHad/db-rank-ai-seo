@@ -183,12 +183,13 @@ export default function Blog() {
                             minW='140px'
                             mt={{ base: "20px" }}
                             ml={{ base: "20px" }}
-                            variant='brand'
+                            bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important'
+                            color={'white'}
                             fontWeight='500'
                             onClick={() => { setOnopen(onopen + 1); setQuestion({ id: null, question: '' }) }}
                         >
                             <Icon as={MdAdd} h='18px' w='18px' />
-                            Add Question
+                            New Question
                         </Button>
                     </Flex>
                     <QuestionModal _question={question} onopen={onopen} handleOnClose={handleOnClose} handleOnUpdate={handleOnUpdate} />

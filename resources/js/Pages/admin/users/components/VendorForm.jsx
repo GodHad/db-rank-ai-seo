@@ -242,7 +242,7 @@ export default function VendorForm({ vendor, setOpenedPage }) {
                     />
                 </Box>
             </FormControl>
-            <Button variant={"brand"} mt={3} mr={3} onClick={handleVendor}>
+            <Button bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important' color={'white'} mt={3} mr={3} onClick={handleVendor}>
                 Save
             </Button>
             <Button mt={3} onClick={() => setOpenedPage(0)}>Cancel</Button>

@@ -137,7 +137,7 @@ export default function TagModal({ tag, onopen, handleOnClose, handleOnUpdate })
           </ModalBody>
 
           <ModalFooter>
-            <Button variant={"brand"} mr={3} onClick={handleTag}>
+            <Button bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important' color={'white'} mr={3} onClick={handleTag}>
               Save
             </Button>
             <Button onClick={onClose}>Cancel</Button>

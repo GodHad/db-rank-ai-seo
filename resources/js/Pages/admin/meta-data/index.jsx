@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 
 import AdminLayout from '@/layouts/admin';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Template from './components/Template';
 
 export default function MetaData() {

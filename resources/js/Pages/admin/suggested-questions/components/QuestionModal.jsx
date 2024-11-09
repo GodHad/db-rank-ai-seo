@@ -139,7 +139,7 @@ export default function QuestionModal({ _question, onopen, handleOnClose, handle
           </ModalBody>
 
           <ModalFooter>
-            <Button variant={"brand"} mr={3} onClick={handleQuestion}>
+            <Button bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important' color={'white'} mr={3} onClick={handleQuestion}>
               Save
             </Button>
             <Button onClick={onClose}>Cancel</Button>

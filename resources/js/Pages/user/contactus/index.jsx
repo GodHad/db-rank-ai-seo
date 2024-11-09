@@ -227,7 +227,7 @@ export default function Contact() {
                                             />
                                         </FormControl>
                                         <FormControl float="right" mt={5} mb={5}>
-                                            <Button variant="solid" bgGradient="linear(to-r, green.400, blue.800)" color="white" _hover={{}} onClick={handleSubmit}>
+                                            <Button bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important' color="white" _hover={{}} onClick={handleSubmit}>
                                                 Send Message
                                             </Button>
                                         </FormControl>

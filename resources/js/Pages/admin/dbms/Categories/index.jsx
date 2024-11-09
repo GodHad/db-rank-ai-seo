@@ -199,12 +199,13 @@ export default function ColumnTable(props) {
                     minW='140px'
                     mt={{ base: "20px" }}
                     ml={{ base: "20px" }}
-                    variant='brand'
+                    bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important'
+                    color={'white'}
                     fontWeight='500'
                     onClick={() => { setOnopen(onopen + 1); setCategory({ id: null, title: '', shortname: '' }) }}
                 >
                     <Icon as={MdAdd} h='18px' w='18px' />
-                    Add Category
+                    New Category
                 </Button>
             </Flex>
             <CategoryModal category={category} onopen={onopen} handleOnClose={handleOnClose} handleOnUpdate={handleOnUpdate} />

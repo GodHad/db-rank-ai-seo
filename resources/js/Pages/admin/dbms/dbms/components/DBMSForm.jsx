@@ -303,9 +303,7 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
     const [editorLoaded, setEditorLoaded] = useState(false);
 
     useEffect(() => {
-        // Ensure this only runs in the browser
         if (typeof window !== "undefined") {
-            // Dynamically import CKEditor and all plugins
             Promise.all([
                 import('@ckeditor/ckeditor5-react').then(module => module.CKEditor),
                 import('ckeditor5').then(ckModules => ({
@@ -687,7 +685,7 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
                     />
                 </Box>
             </FormControl>
-            <Button variant={"brand"} mr={3} onClick={handleVendor}>
+            <Button bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important' color={'white'} mr={3} onClick={handleVendor}>
                 Save
             </Button>
             <Button onClick={() => setOpenedPage(0)}>Cancel</Button>

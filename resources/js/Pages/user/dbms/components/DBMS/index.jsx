@@ -281,12 +281,11 @@ export default function DBMS({ selectedDBMS, slug }) {
                                                     <a href={'mailto:office@dbrank.ai'} target='_blank'>
                                                         <Button
                                                             fontSize='sm'
-                                                            variant='solid'
                                                             fontWeight='500'
                                                             minW={'120px'}
                                                             w='100%'
+                                                            bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important'
                                                             color={'white'}
-                                                            bg={contactCTAColor}
                                                             h={{ md: '50px', '2sm': '40px', base: '30px' }}
                                                             mb={{ base: '10px', md: '24px' }}
                                                         >

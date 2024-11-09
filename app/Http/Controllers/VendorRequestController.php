@@ -273,6 +273,13 @@ class VendorRequestController extends Controller
 
     public function renderProfile(): InertiaResponse
     {
-        return Inertia::render('user/profile');
+        $user = Auth::guard('web')->user();
+        $admins = env('admin');
+        if ($user) {
+            $user->admin = strpos($admins, $user->email) !== false;
+            $userRole = UserRole::where('user_id', $user->id)->first();
+            $user->author = $userRole->author;
+        }
+        return Inertia::render('user/profile', ['user' => $user]);
     }
 }

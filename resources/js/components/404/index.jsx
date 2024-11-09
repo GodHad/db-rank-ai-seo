@@ -8,7 +8,7 @@ export default function NotFound() {
                 display="inline-block"
                 as="h2"
                 size="2xl"
-                bgGradient="linear(to-r, green.400, blue.800)"
+                bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important'
                 backgroundClip="text">
                 404
             </Heading>
@@ -21,7 +21,7 @@ export default function NotFound() {
             <Link href={'/'}>
                 <Button
                     colorScheme="teal"
-                    bgGradient="linear(to-r, green.400, blue.800)"
+                    bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important'
                     color="white"
                     variant="solid">
                     Go to Home

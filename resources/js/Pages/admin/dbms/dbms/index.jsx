@@ -459,7 +459,8 @@ export default function Vendor() {
                                 me='100%'
                                 w='140px'
                                 minW='140px'
-                                variant='brand'
+                                bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important'
+                                color={'white'}
                                 fontWeight='500'
                                 onClick={() => { setOpenedPage(1); setVendor(initialVendor) }}
                             >

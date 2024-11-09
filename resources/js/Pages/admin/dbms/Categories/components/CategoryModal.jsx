@@ -12,10 +12,9 @@ import {
   FormLabel,
   Input,
   Text,
-  useToast,
-  useDisclosure,
-  useColorModeValue
+  useToast
 } from '@chakra-ui/react'
+import { useDisclosure, useColorModeValue } from '@chakra-ui/react'
 import axios from 'axios';
 
 export default function CategoryModal({ category, onopen, handleOnClose, handleOnUpdate }) {
@@ -162,7 +161,7 @@ export default function CategoryModal({ category, onopen, handleOnClose, handleO
           </ModalBody>
 
           <ModalFooter>
-            <Button variant={"brand"} mr={3} onClick={handleCategory}>
+            <Button bg='linear-gradient(15.46deg, #2ac349 26.3%, #018cc1 86.4%) !important' color={'white'} mr={3} onClick={handleCategory}>
               Save
             </Button>
             <Button onClick={onClose}>Cancel</Button>
