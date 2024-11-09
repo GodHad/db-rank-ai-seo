@@ -10,7 +10,7 @@ export default ({ content, title }) => {
                 <title>DB Rank AI | {title}</title>
             </Helmet>
             <InertiaHead>
-                {typeof window !== 'undefined' && <meta property="og:url" content="https://github.com/GodHad"/>}
+                {typeof window !== 'undefined' && <meta property="og:url" content={window.location.href}/>}
                 {content && content.meta_title && <meta name="twitter:title" content={content.meta_title} />}
                 {content && content.meta_title && <meta property="og:title" content={content.meta_title} />}
                 {content && content.meta_description && <meta name="description" content={content.meta_description} />}
