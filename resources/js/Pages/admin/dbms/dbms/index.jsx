@@ -87,7 +87,8 @@ export const initialVendor = {
     meta_description: '',
     og_graph_image: null,
     twitter_graph_image: null,
-    extra_content: ''
+    extra_content: '',
+    contact: ''
 }
 
 export default function Vendor() {
@@ -447,9 +448,6 @@ export default function Vendor() {
     return (
         <Card
             flexDirection="column"
-            w="100%"
-            px="0px"
-            overflowX={{ sm: 'scroll', lg: 'hidden' }}
         >
             {openedPage === 0 && (
                 <>
@@ -481,7 +479,26 @@ export default function Vendor() {
                     </div>
                     <Flex w='100%'>
                     </Flex>
-                    <Box>
+                    <Box
+                        w="100%"
+                        px="0px"
+                        overflowX={{ sm: 'scroll', lg: 'hidden' }}
+                        sx={{
+                            '&::-webkit-scrollbar': {
+                                width: '8px',
+                                height: '8px',
+                                backgroundColor: 'transparent', // Change to transparent or the desired color
+                            },
+                            '&::-webkit-scrollbar-thumb': {
+                                backgroundColor: borderColor, // Color for the scrollbar thumb
+                                borderRadius: '20px',
+                            },
+                            '&::-webkit-scrollbar-track': {
+                                backgroundColor: 'rgba(0, 0, 0, 0.15)', // Track color, adjust as needed
+                                borderRadius: '20px',
+                            },
+                        }}
+                    >
                         <Table variant="simple" color="gray.500" mb="24px" mt="12px">
                             <Thead>
                                 {table.getHeaderGroups().map((headerGroup) => (
@@ -563,75 +580,26 @@ export default function Vendor() {
                                 )}
                             </Tbody>
                         </Table>
-                        {table.getRowModel().rows.length !== 0 &&
-                            <Flex justifyContent="space-between" m={4} alignItems="center" >
-                                <Flex>
-                                    <Tooltip label="First Page" >
-                                        <IconButton
-                                            onClick={() => table.firstPage()}
-                                            isDisabled={!table.getCanPreviousPage()}
-                                            icon={<MdArrowLeft h={3} w={3} />}
-                                            mr={4}
-                                        />
-                                    </Tooltip>
-                                    <Tooltip label="Previous Page" >
-                                        <IconButton
-                                            onClick={() => table.previousPage()}
-                                            isDisabled={!table.getCanPreviousPage()}
-                                            icon={<MdChevronLeft h={6} w={6} />}
-                                        />
-                                    </Tooltip>
-                                </Flex>
-
-                                <Flex alignItems="center" >
-                                    <Text flexShrink="0" mr={8} >
-                                        Page{" "}
-                                        <Text fontWeight="bold" as="span" >
-                                            {table.getState().pagination.pageIndex + 1}
-                                        </Text>{" "}
-                                        of{" "}
-                                        <Text fontWeight="bold" as="span" >
-                                            {table.getPageCount().toLocaleString()}
-                                        </Text>
-                                    </Text>
-                                    <Text flexShrink="0" > Go to page: </Text>{" "}
-                                    <NumberInput
-                                        ml={2}
-                                        mr={8}
-                                        w={28}
-                                        min={1}
-                                        max={table.getPageCount()}
-                                        onChange={value => {
-                                            const page = Number(value) - 1;
-                                            table.setPageIndex(page)
-                                        }}
-                                        defaultValue={table.getState().pagination.pageIndex + 1}
-                                    >
-                                        <NumberInputField />
-                                        <NumberInputStepper >
-                                            <NumberIncrementStepper />
-                                            <NumberDecrementStepper />
-                                        </NumberInputStepper>
-                                    </NumberInput>
-                                    <SimpleSelect
-                                        w={32}
-                                        color={textColor}
-                                        value={table.getState().pagination.pageSize}
-                                        onChange={e => {
-                                            table.setPageSize(Number(e.target.value))
-                                        }}
-                                    >
-                                        {
-                                            [10, 20, 30, 40, 50].map((pageSize) => (
-                                                <option key={pageSize} value={pageSize} >
-                                                    Show {pageSize}
-                                                </option>
-                                            ))
-                                        }
-                                    </SimpleSelect>
-                                </Flex>
-
-                                <Flex >
+                    </Box>
+                    {table.getRowModel().rows.length !== 0 &&
+                        <Flex justifyContent="space-between" m={4} alignItems="center" gap={4} flexDir={{ base: 'column', md: 'row' }}>
+                            <Flex>
+                                <Tooltip label="First Page" >
+                                    <IconButton
+                                        onClick={() => table.firstPage()}
+                                        isDisabled={!table.getCanPreviousPage()}
+                                        icon={<MdArrowLeft h={3} w={3} />}
+                                        mr={4}
+                                    />
+                                </Tooltip>
+                                <Tooltip label="Previous Page">
+                                    <IconButton
+                                        onClick={() => table.previousPage()}
+                                        isDisabled={!table.getCanPreviousPage()}
+                                        icon={<MdChevronLeft h={6} w={6} />}
+                                    />
+                                </Tooltip>
+                                <Flex display={{ base: 'flex', md: 'none' }} ml={4}>
                                     <Tooltip label="Next Page" >
                                         <IconButton
                                             onClick={() => table.nextPage()}
@@ -649,8 +617,72 @@ export default function Vendor() {
                                     </Tooltip>
                                 </Flex>
                             </Flex>
-                        }
-                    </Box>
+
+                            <Flex alignItems="center" gap={4} flexDir={{ base: 'column', 'md': 'row' }}>
+                                <Text flexShrink="0">
+                                    Page{" "}
+                                    <Text fontWeight="bold" as="span" >
+                                        {table.getState().pagination.pageIndex + 1}
+                                    </Text>{" "}
+                                    of{" "}
+                                    <Text fontWeight="bold" as="span" >
+                                        {table.getPageCount().toLocaleString()}
+                                    </Text>
+                                </Text>
+                                <Text flexShrink="0" > Go to page: </Text>{" "}
+                                <NumberInput
+                                    w={28}
+                                    min={1}
+                                    max={table.getPageCount()}
+                                    onChange={value => {
+                                        const page = Number(value) - 1;
+                                        table.setPageIndex(page)
+                                    }}
+                                    defaultValue={table.getState().pagination.pageIndex + 1}
+                                >
+                                    <NumberInputField />
+                                    <NumberInputStepper >
+                                        <NumberIncrementStepper />
+                                        <NumberDecrementStepper />
+                                    </NumberInputStepper>
+                                </NumberInput>
+                                <SimpleSelect
+                                    w={32}
+                                    color={textColor}
+                                    value={table.getState().pagination.pageSize}
+                                    onChange={e => {
+                                        table.setPageSize(Number(e.target.value))
+                                    }}
+                                >
+                                    {
+                                        [10, 20, 30, 40, 50].map((pageSize) => (
+                                            <option key={pageSize} value={pageSize} >
+                                                Show {pageSize}
+                                            </option>
+                                        ))
+                                    }
+                                </SimpleSelect>
+                            </Flex>
+
+                            <Flex display={{ base: 'none', md: 'flex' }}>
+                                <Tooltip label="Next Page" >
+                                    <IconButton
+                                        onClick={() => table.nextPage()}
+                                        isDisabled={!table.getCanNextPage()}
+                                        icon={<MdChevronRight h={10} w={10} />}
+                                    />
+                                </Tooltip>
+                                <Tooltip label="Last Page" >
+                                    <IconButton
+                                        onClick={() => table.lastPage()}
+                                        isDisabled={!table.getCanNextPage()}
+                                        icon={<MdArrowRight h={10} w={10} />}
+                                        ml={4}
+                                    />
+                                </Tooltip>
+                            </Flex>
+                        </Flex>
+                    }
                 </>
             )}
             {openedPage === 1 && <DBMSForm vendor={vendor} categories={categories} setOpenedPage={() => { setOpenedPage(0); }} />}

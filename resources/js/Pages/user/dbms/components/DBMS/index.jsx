@@ -76,7 +76,6 @@ export default function DBMS({ selectedDBMS, slug }) {
     let secondaryText = useColorModeValue('gray.700', 'white');
     const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
     const viewsColor = useColorModeValue('green.500', 'green.300');
-    const contactCTAColor = useColorModeValue('green.500', 'green.400');
 
     const compareText = useBreakpointValue({ base: 'Compare', md: 'Compare with others' });
 
@@ -101,6 +100,10 @@ export default function DBMS({ selectedDBMS, slug }) {
             })
         }
     }, [selectedDBMS])
+
+    useEffect(() => {
+
+    }, [editing])
 
     return (
         <UserLayout>
@@ -278,7 +281,7 @@ export default function DBMS({ selectedDBMS, slug }) {
                                             </Flex>
                                             <Flex flexDir={'column'} maxWidth={{ base: '200px', md: '100vh' }}>
                                                 <Flex gap={2} flexDir={{ base: 'column', md: 'row' }}>
-                                                    <a href={'mailto:office@dbrank.ai'} target='_blank'>
+                                                    <a href={selectedDBMS.contact} target='_blank'>
                                                         <Button
                                                             fontSize='sm'
                                                             fontWeight='500'

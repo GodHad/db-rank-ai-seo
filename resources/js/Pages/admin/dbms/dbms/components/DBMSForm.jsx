@@ -69,7 +69,8 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
         meta_description,
         og_graph_image,
         twitter_graph_image,
-        extra_content
+        extra_content,
+        contact
     } = vendor;
 
     const textColor = useColorModeValue("navy.700", "white");
@@ -122,7 +123,8 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
         twitter_graph_image,
         og_graph_file: null,
         twitter_graph_file: null,
-        extra_content
+        extra_content,
+        contact
     })
 
     useEffect(() => {
@@ -173,7 +175,8 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
             twitter_graph_image,
             og_graph_file: null,
             twitter_graph_file: null,
-            extra_content
+            extra_content,
+            contact
         });
     }, [vendor])
 
@@ -366,6 +369,9 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
                 </FormControl>
                 <FormControl display={'flex'} justifyContent={'space-between'} flexDir={{ base: 'column', md: 'row' }} gap={{ md: 6, base: 2 }} alignItems={'center'}>
                     <CustomInput type="url" title="Website URL" name="website_url" value={form.website_url || ''} handleChangeForm={handleChangeForm} textColor={textColor} brandStars={brandStars} />
+                </FormControl>
+                <FormControl display={'flex'} justifyContent={'space-between'} flexDir={{ base: 'column', md: 'row' }} gap={{ md: 6, base: 2 }} alignItems={'center'}>
+                    <CustomInput type="text" title="Contact Info" name="contact" value={form.contact || ''} handleChangeForm={handleChangeForm} textColor={textColor} brandStars={brandStars} />
                 </FormControl>
                 <FormControl mb={'24px'}>
                     <FormLabel

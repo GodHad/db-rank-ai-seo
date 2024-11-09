@@ -133,7 +133,8 @@ class VendorController extends Controller
                 'primary_category' => ['required', 'array'],
                 'primary_category.*' => ['integer'],
                 'secondary_category' => ['nullable'],
-                'website_url' => ['nullable'],
+                'contact' => ['required', 'string'],
+                'website_url' => ['required', 'string'],
                 'technical_doc' => ['nullable'],
                 'developer' => ['nullable'],
                 'initial_release' => ['nullable'],
@@ -189,7 +190,7 @@ class VendorController extends Controller
             ]);
             
             $primary_category = $data['primary_category'];
-            if (isset($data['seconday_category'])) {
+            if (isset($data['secondary_category'])) {
                 $secondary_category = $data['secondary_category'];
                 $secondaryData = array_map(function ($categoryId) use ($vendor) {
                     return [
@@ -233,7 +234,8 @@ class VendorController extends Controller
                 'primary_category' => ['required', 'array'],
                 'primary_category.*' => ['integer'],
                 'secondary_category' => ['nullable'],
-                'website_url' => ['nullable'],
+                'contact' => ['required', 'string'],
+                'website_url' => ['required', 'string'],
                 'technical_doc' => ['nullable'],
                 'developer' => ['nullable'],
                 'initial_release' => ['nullable'],

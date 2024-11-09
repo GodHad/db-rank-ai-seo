@@ -50,6 +50,7 @@ class Vendor extends Model
         'banner',
         'extra_content',
         'user_id',
+        'contact',
         'meta_title',
         'meta_description',
         'og_graph_image',
