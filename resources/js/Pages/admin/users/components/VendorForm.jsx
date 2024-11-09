@@ -31,7 +31,7 @@ export default function VendorForm({ vendor, setOpenedPage }) {
         }
     );
 
-    const dbmsOptions = useMemo(() => dbmss.map(dbms => ({value: dbms.id, label: dbms.db_name})), [vendors])
+    const dbmsOptions = useMemo(() => dbmss.map(dbms => ({ value: dbms.id, label: dbms.db_name })), [vendors])
 
     const queryClient = useQueryClient();
     const toast = useToast();
@@ -63,7 +63,7 @@ export default function VendorForm({ vendor, setOpenedPage }) {
         approved,
         author,
         userRoleId,
-        vendor: vendor.vendor ? {value: vendor.vendor[0].id, label: vendor.vendor[0].db_name} : null
+        vendor: vendor.vendor ? { value: vendor.vendor[0].id, label: vendor.vendor[0].db_name } : null
     })
 
     const createVendorMutation = useMutation(createVendor, {
@@ -123,8 +123,8 @@ export default function VendorForm({ vendor, setOpenedPage }) {
     })
 
     const handleVendor = () => {
-        if (!form.id) createVendorMutation.mutate({ vendor: {...form, dbms_id: form.vendor.value} });
-        else updateVendorMutation.mutate({ vendor: {...form, dbms_id: form.vendor.value} });
+        if (!form.id) createVendorMutation.mutate({ vendor: { ...form, dbms_id: form.vendor.value } });
+        else updateVendorMutation.mutate({ vendor: { ...form, dbms_id: form.vendor.value } });
     }
 
     const handleChangeForm = (e) => {
@@ -132,21 +132,21 @@ export default function VendorForm({ vendor, setOpenedPage }) {
     }
 
     useEffect(() => {
-        console.log({value: vendor.vendor[0].id, label: vendor.vendor[0].db_name})
-        setForm(prevState => ({
-            ...prevState,
-            id,
-            name,
-            surname,
-            email,
-            phone_number,
-            job_title,
-            company,
-            approved,
-            author,
-            userRoleId,
-            vendor: vendor.vendor ? {value: vendor.vendor[0].id, label: vendor.vendor[0].db_name} : null
-        }));
+        if (vendor.vendor)
+            setForm(prevState => ({
+                ...prevState,
+                id,
+                name,
+                surname,
+                email,
+                phone_number,
+                job_title,
+                company,
+                approved,
+                author,
+                userRoleId,
+                vendor: vendor.vendor ? { value: vendor.vendor[0].id, label: vendor.vendor[0].db_name } : null
+            }));
     }, [vendor])
 
     const handleChangeVendor = value => {
