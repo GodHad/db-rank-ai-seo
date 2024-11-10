@@ -135,7 +135,7 @@ class ChatBotController extends Controller
                     ....'
         
                     Hmm... I missed one thing. 
-                    All answer that include the trends score must response monthly average score. This is VERY IMPORTATNT. PLEASE DON'T FORGET THIS.
+                    All answer that include the trends score must respond monthly average score, but don't include 'average' in your response. This is VERY IMPORTATNT. PLEASE DON'T FORGET THIS.
                     Okay. Then let's free talking... I am sure you will be very responsible for any questions whatever.
                 "
             ],
