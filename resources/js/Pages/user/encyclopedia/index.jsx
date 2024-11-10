@@ -105,6 +105,7 @@ const EncyclopediaPage = ({ content }) => {
                         </BreadcrumbItem>
                     </Breadcrumb>
                     <Text
+                        as={'h1'}
                         color={textColor}
                         fontSize="22px"
                         mb="30px"

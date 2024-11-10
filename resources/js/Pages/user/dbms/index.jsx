@@ -93,6 +93,7 @@ export default function Vendor({ content }) {
                 </Breadcrumb>
                 <Flex px="25px" mb="8px" gap={4} flexDir={{ base: 'column' }} justifyContent="space-between" align={{ base: 'inherit' }}>
                     <Text
+                        as={'h1'}
                         color={textColor}
                         fontSize={{ md: "22px", base: '20px' }}
                         mb="4px"

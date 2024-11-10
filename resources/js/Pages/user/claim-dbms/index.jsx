@@ -164,6 +164,7 @@ export default function DBMS({ slug }) {
                     </Breadcrumb>
                     <Flex px="25px" mb="20px" gap={4} flexDir={{ base: 'column', md: 'row' }} justifyContent="space-between" align={{ base: 'inherit', md: "center" }}>
                         <Text
+                            as={'h1'}
                             color={textColor}
                             fontSize={{ md: "22px", base: '20px' }}
                             mb="4px"

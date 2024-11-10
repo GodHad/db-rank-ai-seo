@@ -235,6 +235,7 @@ export default function DBMS({ selectedDBMS, slug }) {
                                             >
                                                 <Flex align={'center'} gap={2} display={{ base: 'none', lg: 'flex' }}>
                                                     <Text
+                                                        as={'h1'}
                                                         color={textColor}
                                                         mb="4px"
                                                         fontWeight="700"

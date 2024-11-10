@@ -97,6 +97,7 @@ export default ({ content }) => {
                         </Breadcrumb>
                         <Flex justify={'space-between'} alignItems={'center'}>
                             <Text
+                                as={'h1'}
                                 color={textColor}
                                 fontSize="22px"
                                 mb="30px"

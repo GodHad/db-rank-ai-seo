@@ -81,7 +81,7 @@ export default function Template({ page }) {
             const { content, meta_title, meta_description, og_graph_image, twitter_graph_image } = data;
             setForm((prev) => ({
                 ...prev,
-                content,
+                content: content || '',
                 meta_title,
                 meta_description,
                 og_graph_image,

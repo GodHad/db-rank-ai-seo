@@ -124,7 +124,7 @@ export default function Contact() {
                         </BreadcrumbItem>
                     }
                 </Breadcrumb>
-                <Heading>Contact us</Heading>
+                <Heading as={'h1'}>Contact us</Heading>
                 {!success ? (
                     <>
                         <Flex>

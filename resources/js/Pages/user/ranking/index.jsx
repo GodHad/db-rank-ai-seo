@@ -110,7 +110,7 @@ export default function Ranking({ content, route }) {
 
                             <BreadcrumbItem color={secondaryText} fontSize='sm' mb='5px'>
                                 <ReactLink href='/ranking'>
-                                    DB Rank
+                                    DBMS Ranking
                                 </ReactLink>
                             </BreadcrumbItem>
                         </Breadcrumb>

@@ -76,7 +76,7 @@ export default ({ blog, route }) => {
                                 src={`${APP_URL}storage/${blog.featured_images[0].url}?w=1400&auhref=compression,format`}
                                 alt={blog.title}
                             />
-                            <ChakraText mb={"32px"} fontSize={{ md: '30px', '2sm': '26px', base: '24px' }} fontWeight={700}>
+                            <ChakraText as={'h1'} mb={"32px"} fontSize={{ md: '30px', '2sm': '26px', base: '24px' }} fontWeight={700}>
                                 {blog.title}
                                 {(user && (user.admin || (user.author && user.id === blog.user_id))) ? (
                                     <ReactLink href={`/blog/edit/${generateSlug(blog.title)}`}>

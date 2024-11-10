@@ -44,7 +44,7 @@ export default function EncyclopediaForm({ encyclopedia }) {
                     </Breadcrumb>
                     {encyclopedia ?
                         <>
-                            <Text mb={"32px"} fontSize={22} fontWeight={600}>{encyclopedia.title}</Text>
+                            <Text as={'h1'} mb={"32px"} fontSize={22} fontWeight={600}>{encyclopedia.title}</Text>
                             {encyclopedia && encyclopedia.content && <CustomCKEditor content={encyclopedia.content} />}
                         </>
                         :

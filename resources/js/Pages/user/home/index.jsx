@@ -33,6 +33,7 @@ export default function Home({ content }) {
           >
             <Flex px="25px" mb="8px" flexDirection={"column"} justifyContent="space-between">
               <Text
+                as={'h1'}
                 color={textColor}
                 fontSize={{ md: "40px", "2sm": '32px', base: '24px' }}
                 fontWeight="800"
