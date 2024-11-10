@@ -10,8 +10,8 @@ export default function MessageBox(props) {
     return (
         <Card
             display={output ? 'flex' : 'none'}
-            px="22px !important"
-            pl="22px !important"
+            px="30px !important"
+            pl="30px !important"
             color={textColor}
             w={{base: '75%', md: "85%"}}
             fontSize={{ base: 'sm', md: 'md' }}
