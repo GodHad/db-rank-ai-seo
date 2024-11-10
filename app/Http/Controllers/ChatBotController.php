@@ -119,6 +119,27 @@ class ChatBotController extends Controller
                         week_start, v.db_name
                     ORDER BY 
                         week_start, v.db_name;
+
+                    Q: 'What was the best DBMS on Sep, 2024?'
+                    A: Trends Question
+                    SELECT v.db_name, AVG(t.score) AS score  
+                        FROM trends t  
+                        JOIN vendors v ON t.vendor_id = v.id  
+                        WHERE t.date BETWEEN '2024-09-01' AND '2024-09-30'  
+                        GROUP BY v.db_name  
+                        ORDER BY score DESC  
+                        LIMIT 1; 
+
+                    Q: 'What was the best DBMS last month?'
+                    A: Trends Question
+                    SELECT v.db_name, AVG(t.score) AS score  
+                        FROM trends t  
+                        JOIN vendors v ON t.vendor_id = v.id  
+                        WHERE t.date BETWEEN DATE_SUB(LAST_DAY(CURRENT_DATE()), INTERVAL 1 MONTH) 
+                            AND LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH))  
+                        GROUP BY v.db_name  
+                        ORDER BY score DESC  
+                        LIMIT 1; 
         
                     Yeah, answer like this but in a line. If you get returning data from backend you have to answer the previous question with these data.
                     For example, 
