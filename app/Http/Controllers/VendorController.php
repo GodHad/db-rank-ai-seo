@@ -290,17 +290,8 @@ class VendorController extends Controller
                 if ($vendor->logo_url) {
                     Storage::disk('public')->delete($vendor->logo_url);
                 }
-                try {
-                    $path = $request->file('logo_file')->store('images/vendors/logos', 'public');
-                    if ($path) {
-                        return 'File stored at: ' . $path;
-                    } else {
-                        return 'File storage failed';
-                    }
-                } catch (\Exception $e) {
-                    return 'Error: ' . $e->getMessage();
-                }
-                $vendor->logo_url = $path;
+                $logoPath = $request->file('logo_file')->store('images/vendors/logos', 'public');
+                $vendor->logo_url = $logoPath;
             }
 
             if ($request->hasFile('banner_file')) {
