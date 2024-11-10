@@ -140,6 +140,17 @@ class ChatBotController extends Controller
                         GROUP BY v.db_name  
                         ORDER BY score DESC  
                         LIMIT 1;
+
+                    Q: 'What was the best DBMS last year?'
+                    A: Trends Question
+                    SELECT v.db_name, AVG(t.score) AS score  
+                        FROM trends t  
+                        JOIN vendors v ON t.vendor_id = v.id  
+                        WHERE t.date >= DATE_FORMAT(DATE_SUB(LAST_DAY(CURRENT_DATE()), INTERVAL 1 YEAR), '%Y-01-01') 
+                        AND t.date <= DATE_FORMAT(LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR)), '%Y-12-31')  
+                        GROUP BY v.db_name  
+                        ORDER BY score DESC  
+                        LIMIT 1;
         
                     Yeah, answer like this but in a line. If you get returning data from backend you have to answer the previous question with these data.
                     For example, 
