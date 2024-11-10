@@ -121,6 +121,7 @@ export default function Chat({ content }) {
 
         setLoading(true);
         setInputCode('');
+        setSuggestedQuestions(null);
         sendChatMutation.mutate(inputCode);
     };
 
