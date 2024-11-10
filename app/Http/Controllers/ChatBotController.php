@@ -114,8 +114,7 @@ class ChatBotController extends Controller
                         vendors v ON t.vendor_id = v.id
                     WHERE 
                         v.db_name IN ('PostgreSQL', 'MySQL')
-                        AND t.date BETWEEN DATE_SUB(LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH)), INTERVAL 5 MONTH)
-                        AND LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH))
+                        AND t.date >= DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH)
                     GROUP BY 
                         week_start, v.db_name
                     ORDER BY 
