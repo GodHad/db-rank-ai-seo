@@ -47,7 +47,7 @@ class ChatBotController extends Controller
                     - On the next line, provide only the relevant SQL query to fetch data. No additional content or commentary.
                     - Ensure the query considers country-specific data when applicable.
                     Responding After Receiving Query Results:
-                    3. When presenting the results, mention the data source in a varied way. Examples include:
+                    3. When presenting the results, you must mention the data source in a varied way. Examples include:
                     'The data is based on dbrank.ai'
                     'According to dbrank.ai'
                     'Based on the analysis from dbrank.ai'
