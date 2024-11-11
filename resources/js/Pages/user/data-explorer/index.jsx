@@ -63,6 +63,7 @@ export default function Chat({ content }) {
 
             const answer = data.answer;
 
+            setLoading(false);
             const displayWithChunkEffect = async (text) => {
                 let displayedText = '';
                 for (const char of text) {
@@ -73,7 +74,6 @@ export default function Chat({ content }) {
             }
 
             await displayWithChunkEffect(answer);
-            setLoading(false);
         },
         onError: () => {
             setLoading(false);

@@ -184,7 +184,7 @@ class ChatBotController extends Controller
                     'Authorization' => "Bearer {$apiKey}",
                 ],
                 'json' => [
-                    'model' => 'gpt-4o-mini',
+                    'model' => 'gpt-4o',
                     'messages' => $messages,
                     'max_tokens' => 1000,
                 ],

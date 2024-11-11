@@ -180,114 +180,116 @@ export default function Template({ page }) {
                 >
                     Content
                 </FormLabel>
-                <CKEditor
-                    editor={ClassicEditor}
-                    config={{
-                        plugins: [
-                            Alignment,
-                            Autoformat,
-                            BlockQuote,
-                            Bold,
-                            CloudServices,
-                            Code,
-                            CodeBlock,
-                            Essentials,
-                            Heading,
-                            HorizontalLine,
-                            Image,
-                            ImageCaption,
-                            ImageInsert,
-                            ImageResize,
-                            ImageStyle,
-                            ImageToolbar,
-                            ImageUpload,
-                            MediaEmbed,
-                            Base64UploadAdapter,
-                            Italic,
-                            Link,
-                            List,
-                            Underline,
-                            Mention,
-                            Paragraph,
-                            SourceEditing,
-                            Strikethrough,
-                            Table,
-                            TableToolbar,
-                            TableProperties,
-                            TableColumnResize,
-                            TextTransformation,
-                            TodoList,
-                        ],
-                        toolbar: [
-                            'undo',
-                            'redo',
-                            '|',
-                            'heading',
-                            '|',
-                            'bold',
-                            'italic',
-                            'alignment',
-                            'strikethrough',
-                            'underline',
-                            'code',
-                            '|',
-                            'bulletedList',
-                            'numberedList',
-                            'todoList',
-                            '|',
-                            'link',
-                            'uploadImage',
-                            'mediaEmbed',
-                            'insertTable',
-                            'blockQuote',
-                            'codeBlock',
-                            'horizontalLine',
-                        ],
-                        alignment: {
-                            options: ['left', 'center', 'right', 'justify'] // Specify the alignment options
-                        },
-                        image: {
-                            resizeOptions: [
-                                {
-                                    name: 'resizeImage:original',
-                                    label: 'Default image width',
-                                    value: null,
-                                },
-                                {
-                                    name: 'resizeImage:50',
-                                    label: '50% page width',
-                                    value: '50',
-                                },
-                                {
-                                    name: 'resizeImage:75',
-                                    label: '75% page width',
-                                    value: '75',
-                                },
+                <Box mb={'8px'}>
+                    <CKEditor
+                        editor={ClassicEditor}
+                        config={{
+                            plugins: [
+                                Alignment,
+                                Autoformat,
+                                BlockQuote,
+                                Bold,
+                                CloudServices,
+                                Code,
+                                CodeBlock,
+                                Essentials,
+                                Heading,
+                                HorizontalLine,
+                                Image,
+                                ImageCaption,
+                                ImageInsert,
+                                ImageResize,
+                                ImageStyle,
+                                ImageToolbar,
+                                ImageUpload,
+                                MediaEmbed,
+                                Base64UploadAdapter,
+                                Italic,
+                                Link,
+                                List,
+                                Underline,
+                                Mention,
+                                Paragraph,
+                                SourceEditing,
+                                Strikethrough,
+                                Table,
+                                TableToolbar,
+                                TableProperties,
+                                TableColumnResize,
+                                TextTransformation,
+                                TodoList,
                             ],
                             toolbar: [
-                                'imageTextAlternative',
-                                'toggleImageCaption',
+                                'undo',
+                                'redo',
                                 '|',
-                                'imageStyle:inline',
-                                'imageStyle:wrapText',
-                                'imageStyle:breakText',
+                                'heading',
                                 '|',
-                                'resizeImage',
+                                'bold',
+                                'italic',
+                                'alignment',
+                                'strikethrough',
+                                'underline',
+                                'code',
+                                '|',
+                                'bulletedList',
+                                'numberedList',
+                                'todoList',
+                                '|',
+                                'link',
+                                'uploadImage',
+                                'mediaEmbed',
+                                'insertTable',
+                                'blockQuote',
+                                'codeBlock',
+                                'horizontalLine',
                             ],
-                            insert: {
-                                integrations: ['url'],
+                            alignment: {
+                                options: ['left', 'center', 'right', 'justify'] // Specify the alignment options
                             },
-                        },
-                        table: {
-                            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties'],
-                        }
-                    }}
-                    data={form.content}
-                    onChange={(event, editor) => {
-                        const data = editor.getData();
-                        setForm(prev => ({ ...prev, content: data }))
-                    }}
-                />
+                            image: {
+                                resizeOptions: [
+                                    {
+                                        name: 'resizeImage:original',
+                                        label: 'Default image width',
+                                        value: null,
+                                    },
+                                    {
+                                        name: 'resizeImage:50',
+                                        label: '50% page width',
+                                        value: '50',
+                                    },
+                                    {
+                                        name: 'resizeImage:75',
+                                        label: '75% page width',
+                                        value: '75',
+                                    },
+                                ],
+                                toolbar: [
+                                    'imageTextAlternative',
+                                    'toggleImageCaption',
+                                    '|',
+                                    'imageStyle:inline',
+                                    'imageStyle:wrapText',
+                                    'imageStyle:breakText',
+                                    '|',
+                                    'resizeImage',
+                                ],
+                                insert: {
+                                    integrations: ['url'],
+                                },
+                            },
+                            table: {
+                                contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties'],
+                            }
+                        }}
+                        data={form.content}
+                        onChange={(event, editor) => {
+                            const data = editor.getData();
+                            setForm(prev => ({ ...prev, content: data }))
+                        }}
+                    />
+                </Box>
                 <CustomInput title="Meta title" name="meta_title" value={form.meta_title} handleChangeForm={handleChangeForm} textColor={textColor} />
                 <FormLabel
                     display='flex'
