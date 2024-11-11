@@ -27,8 +27,9 @@ export default function UserLayout(props) {
           return categoryActiveRoute;
         }
       } else {
+        if (routes[i].path === '/' && window.location.pathname === '/') return routes[i].name;
         if (
-          window.location.pathname.indexOf(routes[i].path) !== -1
+          window.location.pathname.indexOf(routes[i].path) !== -1 && routes[i].path !== '/'
         ) {
           return routes[i].name;
         }
@@ -51,8 +52,9 @@ export default function UserLayout(props) {
           return categoryActiveNavbar;
         }
       } else {
+        if (routes[i].path === '/' && window.location.pathname === '/') return routes[i].secondary;
         if (
-          window.location.pathname.indexOf(routes[i].path) !== -1
+          window.location.pathname.indexOf(routes[i].path) !== -1 && routes[i].path !== '/'
         ) {
           return routes[i].secondary;
         }
@@ -75,8 +77,9 @@ export default function UserLayout(props) {
           return categoryActiveNavbar;
         }
       } else {
+        if (routes[i].path === '/' && window.location.pathname === '/') return routes[i].messageNavbar;
         if (
-          window.location.pathname.indexOf(routes[i].path) !== -1
+          window.location.pathname.indexOf(routes[i].path) !== -1 && routes[i].path !== '/'
         ) {
           return routes[i].messageNavbar;
         }

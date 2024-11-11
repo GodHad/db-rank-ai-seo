@@ -5,7 +5,7 @@ const routes = [
     },
     {
         name: 'Home',
-        path: '/home',
+        path: '/',
     },
     {
         name: 'DBMS Ranking',

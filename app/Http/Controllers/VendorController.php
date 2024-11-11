@@ -130,6 +130,7 @@ class VendorController extends Controller
 
             $validator = Validator::make($data, [
                 'company_name' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string'],
                 'primary_category' => ['required', 'array'],
                 'primary_category.*' => ['integer'],
                 'secondary_category' => ['nullable'],
@@ -178,8 +179,12 @@ class VendorController extends Controller
 
             $logoPath = $request->file('logo_file')->store('images/vendors/logos', 'public');
             $bannerPath = $request->file('banner_file')->store('images/vendors/banners', 'public');
-            $og_graph_image = $request->file('og_graph_file')->store('images/vendors/og_graph_images', 'public');
-            $twitter_graph_image = $request->file('twitter_graph_file')->store('images/vendors/twitter_graph_images', 'public');
+            $og_graph_image = null;
+            $twitter_graph_image = null;
+            if ($request->hasFile('og_graph_file'))
+                $og_graph_image = $request->file('og_graph_file')->store('images/vendors/og_graph_images', 'public');
+            if($request->hasFile('twitter_graph_file'))
+                $twitter_graph_image = $request->file('twitter_graph_file')->store('images/vendors/twitter_graph_images', 'public');
 
             $vendor = Vendor::create([
                 ...$validator->validated(),
@@ -231,6 +236,7 @@ class VendorController extends Controller
 
             $validator = Validator::make($data, [
                 'company_name' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string'],
                 'primary_category' => ['required', 'array'],
                 'primary_category.*' => ['integer'],
                 'secondary_category' => ['nullable'],

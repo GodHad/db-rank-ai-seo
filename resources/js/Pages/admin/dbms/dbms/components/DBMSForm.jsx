@@ -363,6 +363,35 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
                     <CustomInput title="Company Name" name="company_name" value={form.company_name || ''} handleChangeForm={handleChangeForm} textColor={textColor} brandStars={brandStars} />
                     <CustomInput title="Database Name" name="db_name" value={form.db_name || ''} handleChangeForm={handleChangeForm} textColor={textColor} brandStars={brandStars} />
                 </FormControl>
+                <FormControl mb={'24px'}>
+                    <FormLabel
+                        display='flex'
+                        ms='4px'
+                        fontSize='sm'
+                        fontWeight='500'
+                        color={textColor}
+                        mb='8px'
+                    >
+                        Description<Text color={brandStars}>*</Text>
+                    </FormLabel>
+                    <Textarea
+                        isRequired={true}
+                        variant='auth'
+                        fontSize='sm'
+                        ms={{ base: "0px", md: "0px" }}
+                        placeholder=''
+                        mb='24px'
+                        fontWeight='500'
+                        size='lg'
+                        bgColor={bgColor}
+                        border={'1px'}
+                        borderColor={"grey"}
+                        borderRadius={'16px'}
+                        name="description"
+                        value={form.description || ''}
+                        onChange={handleChangeForm}
+                    />
+                </FormControl>
                 <FormControl display={'flex'} justifyContent={'space-between'} flexDir={{ base: 'column', md: 'row' }} gap={{ md: 6, base: 2 }} alignItems={'center'}>
                     <CustomMultiSelect title="Primary Categories" name="primary_category" value={form.primary_category} handleChangeMultiSelect={handleChangeMultiSelect} options={categories.map(category => ({ id: category.id, value: category.title || '', label: category.title }))} />
                     <CustomMultiSelect title="Secondary Categories" name="secondary_category" value={form.secondary_category} handleChangeMultiSelect={handleChangeMultiSelect} options={categories.map(category => ({ id: category.id, value: category.title || '', label: category.title }))} />

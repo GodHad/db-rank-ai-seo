@@ -17,10 +17,7 @@ use App\Http\Controllers\VendorRequestController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return redirect('/home');
-});
-Route::get('/home', [HomeController::class, 'render']);
+Route::get('/', [HomeController::class, 'render']);
 
 Route::get('/explorer', [ChatBotController::class, 'render']);
 

@@ -20,7 +20,7 @@ export default function Home({ content }) {
 
   return (
     <UserLayout>
-      <SeoHeader content={content} title={'Home'} />
+      <SeoHeader content={content} />
       <Box>
         <SimpleGrid columns={{ base: 1, lg: 2, xl: 2 }} gap='20px' mb='20px' justifyContent={"center"}>
           <Card

@@ -41,6 +41,7 @@ const NavLink = ({ _route, onClose }) => {
   const bg = useColorModeValue('gray.200', 'gray.700');
   let activeIcon = useColorModeValue("brand.500", "white");
   let textColor = useColorModeValue("secondaryGray.500", "white");
+  const bgColor = typeof window !== 'undefined' ? _route.path === '/' && window.location.pathname === '/' ? bg : window.location.pathname.indexOf(_route.path) !== -1 && _route.path !== '/' ? bg : 'transparent' : 'transparent';
   return (
     _route.name !== 'Data Explorer' ?
       <Link href={_route.path}>
@@ -48,7 +49,7 @@ const NavLink = ({ _route, onClose }) => {
           px={3}
           py={4}
           rounded={'md'}
-          bg={(typeof window !== "undefined" && window.location.pathname.startsWith(_route.path)) ? bg : 'transparent'}
+          bg={bgColor}
           _hover={{
             textDecoration: 'none',
             bg: bg
@@ -62,7 +63,7 @@ const NavLink = ({ _route, onClose }) => {
         <Flex
           alignItems='center'
           justifyContent='center'
-          bg={(typeof window !== "undefined" && window.location.pathname.startsWith(_route.path)) ? bg : 'transparent'}
+          bg={bgColor}
           _hover={{
             textDecoration: 'none',
             bg: bg,
