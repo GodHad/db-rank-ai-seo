@@ -18,7 +18,7 @@ createServer((page) =>
     createInertiaApp({
         page,
         render: ReactDOMServer.renderToString,
-        title: (title) => `${appName} | ${title}`,
+        title: (title) => `${title ? title : appName}`,
         resolve: (name) => resolvePageComponent(`./Pages/${name}/index.jsx`, import.meta.glob('./Pages/**/*.jsx')),
         setup: ({ App, props }) => {
             global.route = (name, params, absolute) =>

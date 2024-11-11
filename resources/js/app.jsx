@@ -1,7 +1,7 @@
 import './bootstrap';
 import '@/assets/css/App.css';
 import { createRoot } from 'react-dom/client';
-// import { hydrateRoot } from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/inertia-react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { InertiaProgress } from '@inertiajs/progress';
@@ -19,7 +19,7 @@ import { FeaturedProductSidebarContextProvider } from '@/contexts/FeaturedProduc
 const queryClient = new QueryClient();
 
 createInertiaApp({
-    title: (title) => `${appName} | ${title}`,
+    title: (title) => `${title ? title : appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}/index.jsx`, import.meta.glob('./Pages/**/*.jsx')),
     setup({ el, App, props }) {
         const root = createRoot(el);
