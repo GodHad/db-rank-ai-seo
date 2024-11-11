@@ -48,6 +48,7 @@ import { MdAdd } from 'react-icons/md'
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { getSponsors, deleteSponsor } from './requests/use-request';
 import AdminLayout from '@/layouts/admin';
+import SeoHeader from '../../user/components/SeoHeader';
 
 const columnHelper = createColumnHelper();
 
@@ -242,6 +243,7 @@ export default function Sponsor() {
 
     return (
         <AdminLayout>
+            <SeoHeader />
             <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
                 <Card
                     flexDirection="column"

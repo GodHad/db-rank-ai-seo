@@ -11,10 +11,12 @@ import Blogs from './components/blogs';
 import Categories from './components/categories';
 import Tags from './components/tags';
 import AdminLayout from '@/layouts/admin';
+import SeoHeader from '../../user/components/SeoHeader';
 
 export default function Blog() {
     return (
         <AdminLayout>
+            <SeoHeader />
             <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
                 <Tabs>
                     <TabList>

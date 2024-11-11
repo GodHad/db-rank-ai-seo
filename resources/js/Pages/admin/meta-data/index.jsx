@@ -11,6 +11,7 @@ import {
 import AdminLayout from '@/layouts/admin';
 import { useState } from 'react';
 import Template from './components/Template';
+import SeoHeader from '../../user/components/SeoHeader';
 
 export default function MetaData() {
 
@@ -25,6 +26,7 @@ export default function MetaData() {
 
     return (
         <AdminLayout>
+            <SeoHeader />
             <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
                 <Tabs>
                     <TabList>
