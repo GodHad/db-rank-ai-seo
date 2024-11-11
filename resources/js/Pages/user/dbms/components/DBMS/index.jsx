@@ -90,8 +90,8 @@ export default function DBMS({ selectedDBMS, slug }) {
                 return {
                     ...selectedDBMS,
                     overall_ranking: `
-                    <span style="margin-right: 8px; line-height: 36px;">Score:</span> ${selectedDBMS.overall_avg_score.toFixed(2)}<br> 
-                    <span style="margin-right: 8px; line-height: 36px;">Rank:</span> #${selectedDBMS.overall_ranking} Overall<br>
+                    <span style="margin-right: 8px; line-height: 36px;">Score:</span> ${selectedDBMS.overall_avg_score ? selectedDBMS.overall_avg_score.toFixed(2) : 'N/A'}<br> 
+                    <span style="margin-right: 8px; line-height: 36px;">Rank:</span> #${selectedDBMS.overall_ranking ? selectedDBMS.overall_ranking : 'N/A'} Overall<br>
                     ${selectedDBMS.primary_category.map((category, index) => (`<span style="margin-right: 8px; line-height: 36px; opacity: 0">Rank: </span> #${primaryRanking[index]} ${category.shortname}<br>`)).join(' ')}
                 `,
                     primary_category: selectedDBMS.primary_category.map(category => category.title).join(', '),
