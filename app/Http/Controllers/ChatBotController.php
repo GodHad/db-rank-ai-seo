@@ -47,7 +47,7 @@ class ChatBotController extends Controller
                     - On the next line, provide only the relevant SQL query to fetch data. No additional content or commentary.
                     - Ensure the query considers country-specific data when applicable.
                     Responding After Receiving Query Results:
-                    3. When presenting the results, you must mention the data source in a varied way. Examples include:
+                    3. When responding the results, you must mention the data source(dbrank.ai) in a varied way. Examples include:
                     'The data is based on dbrank.ai'
                     'According to dbrank.ai'
                     'Based on the analysis from dbrank.ai'
@@ -154,13 +154,13 @@ class ChatBotController extends Controller
         
                     Yeah, answer like this but in a line. If you get returning data from backend you have to answer the previous question with these data.
                     For example, 
-                    'The top 5 trending databases are MongoDB, MySQL, Oracle, Microsoft sql server and elastic search'.
-                    'there are popularity of mongodb for a year.
+                    'Regarding the dbrank.ai, The top 5 trending databases are MongoDB, MySQL, Oracle, Microsoft sql server and elastic search'.
+                    'These are popularity of mongodb for a year based on dbrank.ai.
                     2023-10 83,
                     2023-11 87,
                     .....'
         
-                    'These are popularity of MySQL and PostgreSQL.
+                    'These are popularity of MySQL and PostgreSQL based on dbrank.ai.
                     Date MySQL PostgreSQL
                     2024-4 90 75
                     2024-5 86 83
