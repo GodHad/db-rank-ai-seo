@@ -194,7 +194,8 @@ class FetchTrends extends Command
             }
         }
 
-        $vendors = Vendor::whereIn('id', $vendorIds)->get();
+        $vendors = Vendor::whereNotIn('id', $vendorIds)->get();
+        Log::info($vendors);
 
         foreach ($vendors as $vendor) {
             $vendor->overall_ranking = $rank;
