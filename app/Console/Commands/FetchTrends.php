@@ -181,13 +181,25 @@ class FetchTrends extends Command
         arsort($averageScores);
         Log::info($averageScores);
         $rank = 1;
+
+        $vendorIds = [];
+        
         foreach ($averageScores as $vendorId => $averageScore) {
+            array_push($vendorIds, $vendorId);
             $vendor = Vendor::with('primaryCategory')->find($vendorId);
             if ($vendor) {
                 $vendor->overall_ranking = $rank++;
                 $vendor->primary_ranking = ''; 
                 $vendor->save();
             }
+        }
+
+        $vendors = Vendor::whereIn('id', $vendorIds)->get();
+
+        foreach ($vendors as $vendor) {
+            $vendor->overall_ranking = $rank;
+            $vendor->primary_ranking = '';
+            $vendor->save();
         }
 
         Log::info('Update overall ranking');
