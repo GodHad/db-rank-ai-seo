@@ -173,7 +173,7 @@ class FetchTrends extends Command
 
         $averageScores = [];
         foreach ($vendorScores as $vendorId => $data) {
-            $averageScores[$vendorId] = $data['totalScore'] / 54;
+            $averageScores[$vendorId] = $data['totalScore'] / 4;
         }
 
         arsort($averageScores);
