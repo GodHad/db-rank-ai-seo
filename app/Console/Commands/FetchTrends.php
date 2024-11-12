@@ -31,49 +31,50 @@ class FetchTrends extends Command
      */
     public function handle()
     {
-        set_time_limit(0);
-        $exePath = __DIR__ . '/main.exe';
+        // set_time_limit(0);
+        // $exePath = __DIR__ . '/main.exe';
     
-        if ($this->option('all')) {
+        // if ($this->option('all')) {
             
-            $keywords = Vendor::pluck('db_name', 'id')->toArray();
+        //     $keywords = Vendor::pluck('db_name', 'id')->toArray();
             
-            foreach ($keywords as $id => $keyword) {
-                $command = '/var/www/fetching_data.sh' . " " . escapeshellarg($keyword);
-                // $command = escapeshellcmd($exePath) . " " . escapeshellarg($keyword);
+        //     foreach ($keywords as $id => $keyword) {
+        //         $command = '/var/www/fetching_data.sh' . " " . escapeshellarg($keyword);
+        //         // $command = escapeshellcmd($exePath) . " " . escapeshellarg($keyword);
                 
-                Log::info('Running command for keyword: ' . $command);
+        //         Log::info('Running command for keyword: ' . $command);
 
-                $output = [];
-                $returnVar = 0;
-                exec($command . ' 2>&1', $output, $returnVar);
+        //         $output = [];
+        //         $returnVar = 0;
+        //         exec($command . ' 2>&1', $output, $returnVar);
                 
-                Log::info('Command executed, returnVar: ' . $returnVar);
-                Log::info('Output: ' . implode("\n", $output));
+        //         Log::info('Command executed, returnVar: ' . $returnVar);
+        //         Log::info('Output: ' . implode("\n", $output));
                 
-                Trend::where('vendor_id', $id)->delete();
-                CountryTrend::where('vendor_id', $id)->delete();
-                $this->processTrendData(); // Process the trend data after each command
-            }
+        //         Trend::where('vendor_id', $id)->delete();
+        //         CountryTrend::where('vendor_id', $id)->delete();
+        //         $this->processTrendData(); // Process the trend data after each command
+        //     }
             
-        } else {
-            $keyword = $this->argument('keywords');
-            $command = '/var/www/fetching_data.sh' . " " . escapeshellarg($keyword);
-            // $command = escapeshellcmd($exePath) . " " . escapeshellarg($keyword);
+        // } else {
+        //     $keyword = $this->argument('keywords');
+        //     $command = '/var/www/fetching_data.sh' . " " . escapeshellarg($keyword);
+        //     // $command = escapeshellcmd($exePath) . " " . escapeshellarg($keyword);
             
-            Log::info('Running command for single keyword: ' . $command);
-            $output = [];
-            $returnVar = 0;
-            exec($command . ' 2>&1', $output, $returnVar);
+        //     Log::info('Running command for single keyword: ' . $command);
+        //     $output = [];
+        //     $returnVar = 0;
+        //     exec($command . ' 2>&1', $output, $returnVar);
             
-            Log::info('Command executed, returnVar: ' . $returnVar);
-            Log::info('Output: ' . implode("\n", $output));
+        //     Log::info('Command executed, returnVar: ' . $returnVar);
+        //     Log::info('Output: ' . implode("\n", $output));
             
-            $this->processTrendData(); // Process the trend data for single keyword
-        }
+        //     $this->processTrendData(); // Process the trend data for single keyword
+        // }
 
-        $this->info("Trends fetched and processed");
-        $this->error("An error occurred while fetching trends: " . implode("\n", $output));
+        // $this->info("Trends fetched and processed");
+        // $this->error("An error occurred while fetching trends: " . implode("\n", $output));
+        $this->updateRankings();
     }
 
     private function processTrendData()
