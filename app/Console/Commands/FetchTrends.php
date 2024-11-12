@@ -110,6 +110,7 @@ class FetchTrends extends Command
                     CountryTrend::insert($countryTrends);
                 }
             }
+            unlink($country_score_file);
         }
 
         // Process trends
@@ -138,6 +139,7 @@ class FetchTrends extends Command
                     Trend::insert($trends);
                 }
             }
+            unlink($score_file);
         }
 
         // Optional: Update rankings after processing
