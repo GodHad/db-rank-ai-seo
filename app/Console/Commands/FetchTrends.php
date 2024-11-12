@@ -178,7 +178,7 @@ class FetchTrends extends Command
         }
 
         arsort($averageScores);
-
+        Log::info($averageScores);
         $rank = 1;
         foreach ($averageScores as $vendorId => $averageScore) {
             $vendor = Vendor::with('primaryCategory')->find($vendorId);
