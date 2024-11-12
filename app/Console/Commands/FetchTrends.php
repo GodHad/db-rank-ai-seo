@@ -179,13 +179,13 @@ class FetchTrends extends Command
         }
 
         arsort($averageScores);
-        Log::info($averageScores);
+        // Log::info($averageScores);
         $rank = 1;
 
-        $vendorIds = [];
+        // $vendorIds = [];
         
         foreach ($averageScores as $vendorId => $averageScore) {
-            array_push($vendorIds, $vendorId);
+            // array_push($vendorIds, $vendorId);
             $vendor = Vendor::with('primaryCategory')->find($vendorId);
             if ($vendor) {
                 $vendor->overall_ranking = $rank++;
@@ -194,14 +194,14 @@ class FetchTrends extends Command
             }
         }
 
-        $vendors = Vendor::whereNotIn('id', $vendorIds)->get();
-        Log::info($vendors);
+        // $vendors = Vendor::whereNotIn('id', $vendorIds)->get();
+        // Log::info($vendors);
 
-        foreach ($vendors as $vendor) {
-            $vendor->overall_ranking = $rank;
-            $vendor->primary_ranking = '';
-            $vendor->save();
-        }
+        // foreach ($vendors as $vendor) {
+        //     $vendor->overall_ranking = $rank;
+        //     $vendor->primary_ranking = '';
+        //     $vendor->save();
+        // }
 
         Log::info('Update overall ranking');
         $categoryRankings = [];
