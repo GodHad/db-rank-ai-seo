@@ -51,9 +51,7 @@ class FetchTrends extends Command
                 Log::info('Command executed, returnVar: ' . $returnVar);
                 Log::info('Output: ' . implode("\n", $output));
                 
-                Trend::where('vendor_id', $id)->delete();
-                CountryTrend::where('vendor_id', $id)->delete();
-                $this->processTrendData(); // Process the trend data after each command
+                $this->processTrendData($id); // Process the trend data after each command
             }
             
         } else {
@@ -77,15 +75,15 @@ class FetchTrends extends Command
         // $this->updateRankings();
     }
 
-    private function processTrendData()
+    private function processTrendData($id = null)
     {
         $country_score_file = '/var/www/trends_data_by_country_weekly.csv';
         $score_file = '/var/www/trends_data.csv';
         // $country_score_file = 'trends_data_by_country_weekly.csv';
         // $score_file = 'trends_data.csv';
-
         // Process country trends
         if (file_exists($country_score_file)) {
+            if ($id) CountryTrend::where('vendor_id', $id)->delete();
             if (($handle = fopen($country_score_file, 'r')) !== false) {
                 $header = fgetcsv($handle);
                 $len = count($header);
@@ -116,6 +114,7 @@ class FetchTrends extends Command
 
         // Process trends
         if (file_exists($score_file)) {
+            if ($id) Trend::where('vendor_id', $id)->delete();
             if (($handle1 = fopen($score_file, 'r')) !== false) {
                 $header = fgetcsv($handle1);
                 $len = count($header);
