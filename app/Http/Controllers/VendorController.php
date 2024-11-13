@@ -7,6 +7,9 @@ use App\Models\User;
 use App\Models\Trend;
 use App\Models\Category;
 use App\Models\CountryTrend;
+use App\Models\GHPull;
+use App\Models\GHStar;
+use App\Models\HNCount;
 use App\Models\PrimaryCategoryVendor;
 use App\Models\SecondaryCategoryVendor;
 use App\Models\Content;
@@ -25,18 +28,8 @@ class VendorController extends Controller
     public function vendors(Request $request)
     {
         try {
-            // $countPerPage = $request->query('countPerPage');
-            // if ($countPerPage) $vendors = Vendor::orderBy('overall_ranking')->limit($countPerPage)->get();
-            // else $vendors = Vendor::with(['primaryCategory', 'secondaryCategory'])->get();
-            $vendors = Vendor::with(['primaryCategory', 'secondaryCategory', 'user'])->get();
-            // foreach ($vendors as $vendor) {
-            //     // Split the primary_category and secondary_category fields into arrays of category IDs
-            //     $primaryCategoryIds = explode(',', $vendor->primary_category);
-            //     $secondaryCategoryIds = explode(',', $vendor->secondary_category);
 
-            //     $vendor->primary_category = $primaryCategoryIds;
-            //     $vendor->secondary_category = $secondaryCategoryIds;
-            // }
+            $vendors = Vendor::with(['primaryCategory', 'secondaryCategory', 'user'])->get();
 
             $now = Carbon::now();
 
@@ -54,19 +47,48 @@ class VendorController extends Controller
 
             $country = $request->query('country');
 
+            function findMatchingRecord($records, $vendorId) {
+                foreach ($records as $record) {
+                    if ((int)$record['vendor_id'] === (int)$vendorId) {
+                        return $record;
+                    }
+                }
+                return null;
+            }
+
             function getAverageTrends($startDate, $endDate, $country) {
-                if (!$country || trim($country) === '')
-                return Trend::whereBetween('date', [$startDate, $endDate])
-                    ->selectRaw('vendor_id, AVG(score) as average_score')
-                    ->groupBy('vendor_id')
-                    ->orderBy('average_score', 'desc')
-                    ->get();
-                return CountryTrend::whereBetween('date', [$startDate, $endDate])
-                    ->where('country_code', $country)
-                    ->selectRaw('vendor_id, AVG(score) as average_score')
-                    ->groupBy('vendor_id')
-                    ->orderBy('average_score', 'desc')
-                    ->get();
+                $hnCounts = HNCount::where('date', $startDate)->get()->toArray();
+                $githubStars = GHStar::where('date', $startDate)->get()->toArray();
+                $githubPulls = GHPull::where('date', $startDate)->get()->toArray();
+                
+                $maxHNCount = collect($hnCounts)->max('count');
+                $maxGHStar = collect($githubStars)->max('count');
+                $maxGHPull = collect($githubPulls)->max('count');
+                
+                $averageScores = [];
+                foreach ($hnCounts as $hnCount) {
+                    $vendorId = $hnCount['vendor_id'];
+                
+                    $matchingStar = findMatchingRecord($githubStars, $vendorId);
+                    $matchingPull = findMatchingRecord($githubPulls, $vendorId);
+        
+                    if ($matchingStar && $matchingPull) {
+                        $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount +
+                            ($matchingStar['count'] * 25 / $maxGHStar) + 
+                            ($matchingPull['count'] * 25 / $maxGHPull);
+                    } else if ($matchingStar) {
+                        $averageScores[$vendorId] = $hnCount['count'] * 75 / $maxHNCount +
+                            ($matchingStar['count'] * 25 / $maxGHStar);
+                    } else if ($matchingPull) {
+                        $averageScores[$vendorId] = $hnCount['count'] * 75 / $maxHNCount +
+                            ($matchingPull['count'] * 25 / $maxGHPull);
+                    } else {
+                        $averageScores[$vendorId] = $hnCount['count'] * 100 / $maxHNCount;
+                    }
+                }
+                arsort($averageScores);
+
+                return $averageScores;
             }
 
             $currentMonthTrends = getAverageTrends($currentMonthStart, $currentMonthEnd, $country);
@@ -74,33 +96,33 @@ class VendorController extends Controller
             $previousYearTrends = getAverageTrends($previousYearStart, $previousYearEnd, $country);
 
             $rank = 1;
-            foreach ($currentMonthTrends as $trend) {
+            foreach ($currentMonthTrends as $vendorId => $trend) {
                 foreach ($vendors as $vendor) {
-                    if ($vendor->id === $trend->vendor_id) {
+                    if ($vendor->id === $vendorId) {
                         $vendor->overall_ranking = $rank ++;
-                        $vendor->overall_avg_score = (float)$trend->average_score;
+                        $vendor->overall_avg_score = $trend;
                         break;
                     }
                 }
             }
 
             $rank = 1;
-            foreach ($previousMonthTrends as $trend) {
+            foreach ($previousMonthTrends as $vendorId => $trend) {
                 foreach ($vendors as $vendor) {
-                    if ($vendor->id === $trend->vendor_id) {
+                    if ($vendor->id === $vendorId) {
                         $vendor->prev_month_overall_ranking = $rank ++;
-                        $vendor->prev_month_overall_avg_score = (float)$trend->average_score;
+                        $vendor->prev_month_overall_avg_score = $trend;
                         break;
                     }
                 }
             }
 
             $rank = 1;
-            foreach ($previousYearTrends as $trend) {
+            foreach ($previousYearTrends as $vendorId => $trend) {
                 foreach ($vendors as $vendor) {
-                    if ($vendor->id === $trend->vendor_id) {
+                    if ($vendor->id === $vendorId) {
                         $vendor->prev_year_overall_ranking = $rank ++;
-                        $vendor->prev_year_overall_avg_score = (float)$trend->average_score;
+                        $vendor->prev_year_overall_avg_score = $trend;
                         break;
                     }
                 }
@@ -216,7 +238,7 @@ class VendorController extends Controller
             
             PrimaryCategoryVendor::insert($primaryData);
 
-            ProcessAfterDbmsCreation::dispatch($vendor->db_name);
+            ProcessAfterDbmsCreation::dispatch($vendor->id);
 
             return response()->json(['success' => true]);
         } catch (\Exception $th) {
@@ -287,8 +309,8 @@ class VendorController extends Controller
 
             $dbNameChanged = false;
             $validatedData = $validator->validated();
-            if (array_key_exists('db_name', $validatedData)) {
-                if ($vendor->db_name !== $validatedData['db_name']) {
+            if (array_key_exists('db_name', $validatedData) || array_key_exists('giturl', $validatedData)) {
+                if ($vendor->db_name !== $validatedData['db_name'] || $vendor->giturl !== $validatedData['giturl']) {
                     $dbNameChanged = true;
                 }
             }
@@ -356,9 +378,7 @@ class VendorController extends Controller
             PrimaryCategoryVendor::insert($primaryData);
 
             if ($dbNameChanged) {
-                Trend::where('vendor_id', $vendor->id)->delete();
-                CountryTrend::where('vendor_id', $vendor->id)->delete();
-                ProcessAfterDbmsCreation::dispatch($vendor->db_name);
+                ProcessAfterDbmsCreation::dispatch($vendor->id);
             }
 
             return response()->json(['success' => true, 'vendor' => $vendor]);

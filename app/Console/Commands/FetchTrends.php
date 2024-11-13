@@ -7,7 +7,12 @@ use App\Models\Vendor;
 use App\Models\PrimaryCategoryVendor;
 use App\Models\CountryTrend;
 use App\Models\Trend;
+use App\Models\GHPull;
+use App\Models\GHStar;
+use App\Models\HNCount;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Collection;
 use Carbon\Carbon;
 
 class FetchTrends extends Command
@@ -17,7 +22,7 @@ class FetchTrends extends Command
      *
      * @var string
      */
-    protected $signature = 'fetch:trends {keywords?} {--all}';
+    protected $signature = 'fetch:trends {id?} {--all}';
 
     /**
      * The console command description.
@@ -35,171 +40,135 @@ class FetchTrends extends Command
         $exePath = __DIR__ . '/main.exe';
     
         if ($this->option('all')) {
-            
-            $keywords = Vendor::pluck('db_name', 'id')->toArray();
-            
-            foreach ($keywords as $id => $keyword) {
-                $command = '/var/www/fetching_data.sh' . " " . escapeshellarg($keyword);
-                // $command = escapeshellcmd($exePath) . " " . escapeshellarg($keyword);
-                
-                Log::info('Running command for keyword: ' . $command);
+            $keywords = Vendor::get(['db_name', 'giturl', 'id'])->map(function ($vendor) {
+                return [
+                    'db_name' => $vendor->db_name,
+                    'giturl' => $vendor->giturl,
+                    'id' => $vendor->id,
+                ];
+            })->toArray();
 
-                $output = [];
-                $returnVar = 0;
-                exec($command . ' 2>&1', $output, $returnVar);
-                
-                Log::info('Command executed, returnVar: ' . $returnVar);
-                Log::info('Output: ' . implode("\n", $output));
-                
-                $this->processTrendData($id); // Process the trend data after each command
+            foreach ($keywords as $keyword) {
+                $this->processTrendData($keyword);
             }
-            
+            $this->updateRankings();
         } else {
-            $keyword = $this->argument('keywords');
-            $command = '/var/www/fetching_data.sh' . " " . escapeshellarg($keyword);
-            // $command = escapeshellcmd($exePath) . " " . escapeshellarg($keyword);
-            
-            Log::info('Running command for single keyword: ' . $command);
-            $output = [];
-            $returnVar = 0;
-            exec($command . ' 2>&1', $output, $returnVar);
-            
-            Log::info('Command executed, returnVar: ' . $returnVar);
-            Log::info('Output: ' . implode("\n", $output));
-            
-            $this->processTrendData(); // Process the trend data for single keyword
+            $keyword = Vendor::find($this->argument('id'));
+
+            if ($keyword) {
+                $keyword = [
+                    'db_name' => $keyword->db_name,
+                    'giturl' => $keyword->giturl,
+                    'id' => $keyword->id,
+                ];
+            }
+            $this->processTrendData($keyword);
+            $this->updateRankings();
         }
 
         $this->info("Trends fetched and processed");
-        $this->error("An error occurred while fetching trends: " . implode("\n", $output));
-        // $this->updateRankings();
     }
 
-    private function processTrendData($id = null)
+    private function processTrendData($keyword)
     {
-        $country_score_file = '/var/www/trends_data_by_country_weekly.csv';
-        $score_file = '/var/www/trends_data.csv';
-        // $country_score_file = 'trends_data_by_country_weekly.csv';
-        // $score_file = 'trends_data.csv';
-        // Process country trends
-        if (file_exists($country_score_file)) {
-            if ($id) CountryTrend::where('vendor_id', $id)->delete();
-            if (($handle = fopen($country_score_file, 'r')) !== false) {
-                $header = fgetcsv($handle);
-                $len = count($header);
+        $to = Carbon::now()->subMonth()->startOfMonth();
+        $from = $to->copy()->subMonths(12); 
+        $fromDate = $from->toDateString();
+        $toDate = $to->toDateString();
+        $monthlyCounts = $this->fetchMonthlyMentions($keyword['db_name'], $fromDate, $toDate);
+        $stars = $this->fetchGitHubStars($to->copy()->subMonths(13)->toDateString(), $toDate, $keyword['giturl']);
+        $pulls = $this->fetchGitHubPulls($to->copy()->subMonths(13)->toDateString(), $toDate, $keyword['giturl']);
+        
+        HNCount::where('vendor_id', $keyword['id'])->delete();
+        GHStar::where('vendor_id', $keyword['id'])->delete();
+        GHPull::where('vendor_id', $keyword['id'])->delete();
 
-                $vendors = Vendor::whereIn('db_name', array_slice($header, 1, $len - 2))->get();
-                $vendor_ids = $vendors->pluck('id', 'db_name')->toArray();
-                $countryTrends = [];
-
-                while (($row = fgetcsv($handle)) !== false) {
-                    for ($i = 1; $i < $len - 1; $i++) {
-                        if (isset($vendor_ids[$header[$i]])) {
-                            $countryTrends[] = [
-                                'vendor_id' => $vendor_ids[$header[$i]],
-                                'score' => $row[$i],
-                                'date' => $row[$len - 1],
-                                'country_code' => $row[0],
-                            ];
-                        }
-                    }
-                }
-                fclose($handle);
-                if (!empty($countryTrends)) {
-                    CountryTrend::insert($countryTrends);
-                }
-            }
-            unlink($country_score_file);
+        $elements = [];
+        foreach ($monthlyCounts as $date => $count) {
+            array_push($elements, [
+                'vendor_id' => $keyword['id'],
+                'date' => $date,
+                'count' => $count
+            ]);
         }
+        HNCount::insert($elements);
 
-        // Process trends
-        if (file_exists($score_file)) {
-            if ($id) Trend::where('vendor_id', $id)->delete();
-            if (($handle1 = fopen($score_file, 'r')) !== false) {
-                $header = fgetcsv($handle1);
-                $len = count($header);
-
-                $vendors = Vendor::whereIn('db_name', array_slice($header, 1, $len - 2))->get();
-                $vendor_ids = $vendors->pluck('id', 'db_name')->toArray();
-                $trends = [];
-
-                while (($row = fgetcsv($handle1)) !== false) {
-                    for ($i = 1; $i < $len - 1; $i++) {
-                        if (isset($vendor_ids[$header[$i]])) {
-                            $trends[] = [
-                                'vendor_id' => $vendor_ids[$header[$i]],
-                                'score' => $row[$i],
-                                'date' => $row[0],
-                            ];
-                        }
-                    }
-                }
-                fclose($handle1);
-                if (!empty($trends)) {
-                    Trend::insert($trends);
-                }
-            }
-            unlink($score_file);
+        $elements = [];
+        foreach ($stars as $date => $count) {
+            array_push($elements, [
+                'vendor_id' => $keyword['id'],
+                'date' => $date,
+                'count' => $count
+            ]);
         }
+        GHStar::insert($elements);
 
-        // Optional: Update rankings after processing
-        $this->updateRankings();
+        $elements = [];
+        foreach ($pulls as $date => $count) {
+            array_push($elements, [
+                'vendor_id' => $keyword['id'],
+                'date' => $date,
+                'count' => $count
+            ]);
+        }
+        GHPull::insert($elements);
     }
 
     private function updateRankings()
     {
         Log::info('Start to re-ranking');
-        $latestDate = Trend::max('date');
-        $latestMonthStart = Carbon::parse($latestDate)->startOfMonth();
-        $latestMonthEnd = Carbon::parse($latestDate)->endOfMonth();
-
-        $latestMonthTrends = Trend::whereBetween('date', [$latestMonthStart, $latestMonthEnd])->get();
-
-        $vendorScores = [];
-
-        foreach ($latestMonthTrends as $trend) {
-            $vendorId = $trend->vendor_id;
-            
-            if (!isset($vendorScores[$vendorId])) {
-                $vendorScores[$vendorId] = [
-                    'totalScore' => 0,
-                    'count' => 0
-                ];
-            }
-
-            $vendorScores[$vendorId]['totalScore'] += $trend->score;
-            $vendorScores[$vendorId]['count']++;
-        }
-
-        $averageScores = [];
-        foreach ($vendorScores as $vendorId => $data) {
-            if ($data['count'] === 0) $averageScores[$vendorId] = 0;
-            else $averageScores[$vendorId] = $data['totalScore'] / $data['count'];
-        }
-
-        arsort($averageScores);
-        Log::info($averageScores);
-        $rank = 1;
-
-        $vendorIds = [];
         
+        function findMatchingRecord($records, $vendorId) {
+            foreach ($records as $record) {
+                if ((int)$record['vendor_id'] === (int)$vendorId) {
+                    return $record;
+                }
+            }
+            return null;
+        }
+
+        $latestDate = HNCount::max('date');
+        
+        $hnCounts = HNCount::where('date', $latestDate)->get()->toArray();
+        $githubStars = GHStar::where('date', $latestDate)->get()->toArray();
+        $githubPulls = GHPull::where('date', $latestDate)->get()->toArray();
+        
+        $maxHNCount = collect($hnCounts)->max('count');
+        $maxGHStar = collect($githubStars)->max('count');
+        $maxGHPull = collect($githubPulls)->max('count');
+        
+        $averageScores = [];
+        foreach ($hnCounts as $hnCount) {
+            $vendorId = $hnCount['vendor_id'];
+        
+            $matchingStar = findMatchingRecord($githubStars, $vendorId);
+            $matchingPull = findMatchingRecord($githubPulls, $vendorId);
+
+            if ($matchingStar && $matchingPull) {
+                $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount +
+                    ($matchingStar['count'] * 25 / $maxGHStar) + 
+                    ($matchingPull['count'] * 25 / $maxGHPull);
+            } else if ($matchingStar) {
+                $averageScores[$vendorId] = $hnCount['count'] * 75 / $maxHNCount +
+                    ($matchingStar['count'] * 25 / $maxGHStar);
+            } else if ($matchingPull) {
+                $averageScores[$vendorId] = $hnCount['count'] * 75 / $maxHNCount +
+                    ($matchingPull['count'] * 25 / $maxGHPull);
+            } else {
+                $averageScores[$vendorId] = $hnCount['count'] * 100 / $maxHNCount;
+            }
+        }
+        
+        arsort($averageScores);
+
+        $rank = 1;
         foreach ($averageScores as $vendorId => $averageScore) {
-            array_push($vendorIds, $vendorId);
             $vendor = Vendor::with('primaryCategory')->find($vendorId);
             if ($vendor) {
                 $vendor->overall_ranking = $rank++;
                 $vendor->primary_ranking = ''; 
                 $vendor->save();
             }
-        }
-
-        $vendors = Vendor::whereNotIn('id', $vendorIds)->get();
-        Log::info($vendors);
-
-        foreach ($vendors as $vendor) {
-            $vendor->overall_ranking = $rank;
-            $vendor->primary_ranking = '';
-            $vendor->save();
         }
 
         Log::info('Update overall ranking');
@@ -235,5 +204,68 @@ class FetchTrends extends Command
         }
 
         Log::info('Finish re-ranking');
+    }
+
+    private function fetchMonthlyMentions($keyword, $startDate, $endDate)
+    {
+        $monthlyCounts = [];
+        $start = Carbon::parse($startDate)->startOfMonth();
+        $end = Carbon::parse($endDate)->startOfMonth();
+
+        while ($start <= $end) {
+            $monthStart = $start->timestamp;
+            $monthEnd = $start->copy()->endOfMonth()->timestamp;
+
+            $response = Http::timeout(60)->get("https://hn.algolia.com/api/v1/search", [
+                'query' => $keyword,
+                'numericFilters' => "created_at_i>{$monthStart},created_at_i<{$monthEnd}"
+            ]);
+
+            $monthlyCounts[$start->toDateString()] = $response->json()['nbHits'] ?? 0;
+            sleep(1);
+            $start->addMonth();
+        }
+
+        return $monthlyCounts;
+    }
+
+    private function fetchGitHubStars($from, $to, $keyword)
+    {
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+        ])->get('https://api.ossinsight.io/v1/repos/' . $keyword . '/stargazers/history', [
+            'per' => 'month',
+            'from' => $from,
+            'to' => $to,
+        ]);
+
+        $result = [];
+        $data = $response->json()['data']['rows'];
+        foreach ($data as $index => $entry) {
+            if ($index === 0) continue;
+            $result[$entry['date']] = (int)$entry['stargazers'] - (int)$data[$index - 1]['stargazers'];
+        }
+        
+        return $result;
+    }
+
+    private function fetchGitHubPulls($from, $to, $keyword)
+    {
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+        ])->get('https://api.ossinsight.io/v1/repos/' . $keyword . '/pull_request_creators/history', [
+            'per' => 'month',
+            'from' => $from,
+            'to' => $to,
+        ]);
+
+        $result = [];
+        $data = $response->json()['data']['rows'];
+        foreach ($data as $index => $entry) {
+            if ($index === 0) continue;
+            $result[$entry['date']] = (int)$entry['pull_request_creators'] - (int)$data[$index - 1]['pull_request_creators'];
+        }
+        
+        return $result;
     }
 }
