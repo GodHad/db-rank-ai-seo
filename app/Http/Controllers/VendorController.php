@@ -170,7 +170,8 @@ class VendorController extends Controller
                 'meta_title' => ['nullable', 'string'],
                 'meta_description' => ['nullable', 'string'],
                 'og_graph_file' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp'],
-                'twitter_graph_file' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp']
+                'twitter_graph_file' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp'],
+                'giturl' => ['required', 'string'],
             ]);
 
             if ($validator->fails()) {
@@ -276,7 +277,8 @@ class VendorController extends Controller
                 'meta_title' => ['nullable', 'string'],
                 'meta_description' => ['nullable', 'string'],
                 'og_graph_file' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp'],
-                'twitter_graph_file' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp']
+                'twitter_graph_file' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif,webp'],
+                'giturl' => ['required', 'string'],
             ]);
 
             if ($validator->fails()) {

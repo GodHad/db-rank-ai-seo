@@ -88,7 +88,8 @@ export const initialVendor = {
     og_graph_image: null,
     twitter_graph_image: null,
     extra_content: '',
-    contact: ''
+    contact: '',
+    giturl: ''
 }
 
 export default function Vendor() {

@@ -70,7 +70,8 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
         og_graph_image,
         twitter_graph_image,
         extra_content,
-        contact
+        contact,
+        giturl
     } = vendor;
 
     const textColor = useColorModeValue("navy.700", "white");
@@ -124,7 +125,8 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
         og_graph_file: null,
         twitter_graph_file: null,
         extra_content,
-        contact
+        contact,
+        giturl
     })
 
     useEffect(() => {
@@ -176,7 +178,8 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
             og_graph_file: null,
             twitter_graph_file: null,
             extra_content,
-            contact
+            contact,
+            giturl
         });
     }, [vendor])
 
@@ -401,6 +404,9 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
                 </FormControl>
                 <FormControl display={'flex'} justifyContent={'space-between'} flexDir={{ base: 'column', md: 'row' }} gap={{ md: 6, base: 2 }} alignItems={'center'}>
                     <CustomInput type="text" title="Contact Info" name="contact" value={form.contact || ''} handleChangeForm={handleChangeForm} textColor={textColor} brandStars={brandStars} />
+                </FormControl>
+                <FormControl display={'flex'} justifyContent={'space-between'} flexDir={{ base: 'column', md: 'row' }} gap={{ md: 6, base: 2 }} alignItems={'center'}>
+                    <CustomInput type="text" title="Git Repo Url (e.g. mongodb/mongo)" name="giturl" value={form.giturl || ''} handleChangeForm={handleChangeForm} textColor={textColor} brandStars={brandStars} />
                 </FormControl>
                 <FormControl mb={'24px'}>
                     <FormLabel

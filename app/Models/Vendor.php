@@ -54,7 +54,8 @@ class Vendor extends Model
         'meta_title',
         'meta_description',
         'og_graph_image',
-        'twitter_graph_image'
+        'twitter_graph_image',
+        'giturl'
     ];
 
     public function primaryCategory()
