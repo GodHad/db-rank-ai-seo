@@ -72,18 +72,12 @@ class VendorController extends Controller
                     $matchingStar = findMatchingRecord($githubStars, $vendorId);
                     $matchingPull = findMatchingRecord($githubPulls, $vendorId);
         
-                    if ($matchingStar && $matchingPull) {
-                        $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount +
-                            ($matchingStar['count'] * 25 / $maxGHStar) + 
-                            ($matchingPull['count'] * 25 / $maxGHPull);
-                    } else if ($matchingStar) {
-                        $averageScores[$vendorId] = $hnCount['count'] * 75 / $maxHNCount +
-                            ($matchingStar['count'] * 25 / $maxGHStar);
-                    } else if ($matchingPull) {
-                        $averageScores[$vendorId] = $hnCount['count'] * 75 / $maxHNCount +
-                            ($matchingPull['count'] * 25 / $maxGHPull);
-                    } else {
-                        $averageScores[$vendorId] = $hnCount['count'] * 100 / $maxHNCount;
+                    $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount;
+                    if (isset($matchingStar)) {
+                        $averageScores[$vendorId] += $matchingStar['count'] * 25 / $maxGHStar;
+                    } 
+                    if (isset($matchingPull)) {
+                        $averageScores[$vendorId] += $matchingPull['count'] * 25 / $maxGHPull;
                     }
                 }
                 arsort($averageScores);
@@ -399,6 +393,9 @@ class VendorController extends Controller
 
             Trend::where('vendor_id', $vendor->id)->delete();
             CountryTrend::where('vendor_id', $vendor->id)->delete();
+            GHPull::where('vendor_id', $vendor->id)->delete();
+            GHStar::where('vendor_id', $vendor->id)->delete();
+            HNCount::where('vendor_id', $vendor->id)->delete();
             $vendor->delete();
             return response()->json(['success' => true]);
         } catch (\Exception $th) {

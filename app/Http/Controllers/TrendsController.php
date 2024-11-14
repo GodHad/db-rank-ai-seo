@@ -37,18 +37,12 @@ class TrendsController extends Controller
                     $maxGHStar = GHStar::where('date', $hnCount->date)->max('count');
                     $maxGHPull = GHPull::where('date', $hnCount->date)->max('count');
                     // Calculate the score based on normalized values
-                    if (isset($matchingStar) && isset($matchingPull)) {
-                        $score = $hnCount->count * 50 / $maxHNCount +
-                                ($matchingStar->count * 25 / $maxGHStar) + 
-                                ($matchingPull->count * 25 / $maxGHPull);
-                    } else if (isset($matchingStar)) {
-                        $score = $hnCount->count * 75 / $maxHNCount +
-                                ($matchingStar->count * 25 / $maxGHStar);
-                    } else if (isset($matchingPull)) {
-                        $score = $hnCount->count * 75 / $maxHNCount +
-                                ($matchingPull->count * 25 / $maxGHPull);
-                    } else {
-                        $score = $hnCount->count * 100 / $maxHNCount;
+                    $score = $hnCount->count * 50 / $maxHNCount;
+                    if (isset($matchingStar)) {
+                        $score += $matchingStar->count * 25 / $maxGHStar;
+                    } 
+                    if (isset($matchingPull)) {
+                        $score += $matchingPull->count * 25 / $maxGHPull;
                     }
 
                     // Format the score to two decimal places and add it to values
