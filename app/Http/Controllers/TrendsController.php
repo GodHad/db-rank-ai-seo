@@ -11,6 +11,7 @@ use App\Models\HNCount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class TrendsController extends Controller
 {
@@ -20,40 +21,46 @@ class TrendsController extends Controller
             $vendors = Vendor::with('primaryCategory')->get();
             $chartData = [];
 
+            // Step 2: Iterate over vendors and calculate scores
             foreach ($vendors as $vendor) {
                 $hnCounts = HNCount::where('vendor_id', $vendor->id)->get();
                 $values = [];
+                
                 foreach ($hnCounts as $hnCount) {
-                    // Matching records
-                    $matchingPull = GHPull::where('date', $hnCount->date)->where('vendor_id', $vendor->id)->first();
-                    $matchingStar = GHStar::where('date', $hnCount->date)->where('vendor_id', $vendor->id)->first();
-
-                    // Get max values for the date
+                    $matchingPull = GHPull::where('date', $hnCount->date)
+                                    ->where('vendor_id', $vendor->id)
+                                    ->first();
+                    $matchingStar = GHStar::where('date', $hnCount->date)
+                                    ->where('vendor_id', $vendor->id)
+                                    ->first();
                     $maxHNCount = HNCount::where('date', $hnCount->date)->max('count');
                     $maxGHStar = GHStar::where('date', $hnCount->date)->max('count');
                     $maxGHPull = GHPull::where('date', $hnCount->date)->max('count');
-
-                    // Calculate score
+                    // Calculate the score based on normalized values
                     if (isset($matchingStar) && isset($matchingPull)) {
-                        $score = $hnCount['count'] * 50 / $maxHNCount +
-                                ($matchingStar['count'] * 25 / $maxGHStar) + 
-                                ($matchingPull['count'] * 25 / $maxGHPull);
+                        $score = $hnCount->count * 50 / $maxHNCount +
+                                ($matchingStar->count * 25 / $maxGHStar) + 
+                                ($matchingPull->count * 25 / $maxGHPull);
                     } else if (isset($matchingStar)) {
-                        $score = $hnCount['count'] * 75 / $maxHNCount +
-                                ($matchingStar['count'] * 25 / $maxGHStar);
+                        $score = $hnCount->count * 75 / $maxHNCount +
+                                ($matchingStar->count * 25 / $maxGHStar);
                     } else if (isset($matchingPull)) {
-                        $score = $hnCount['count'] * 75 / $maxHNCount +
-                                ($matchingPull['count'] * 25 / $maxGHPull);
+                        $score = $hnCount->count * 75 / $maxHNCount +
+                                ($matchingPull->count * 25 / $maxGHPull);
                     } else {
-                        $score = $hnCount['count'] * 100 / $maxHNCount;
+                        $score = $hnCount->count * 100 / $maxHNCount;
                     }
 
-                    // Push score into values array
+                    // Format the score to two decimal places and add it to values
                     array_push($values, number_format($score, 2));
                 }
 
-                // Add vendor data
-                array_push($chartData, ['name' => $vendor->db_name, 'data' => $values, 'primary_category' => $vendor->primaryCategory]);
+                // Add the vendor's data to chartData
+                array_push($chartData, [
+                    'name' => $vendor->db_name,
+                    'data' => $values,
+                    'primary_category' => $vendor->primaryCategory
+                ]);
             }
 
             // Get x-axis options (dates for the first vendor)
