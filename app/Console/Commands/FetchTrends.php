@@ -114,18 +114,19 @@ class FetchTrends extends Command
         GHPull::insert($elements);
     }
 
+    private function findMatchingRecord($records, $vendorId) {
+        foreach ($records as $record) {
+            if ((int)$record['vendor_id'] === (int)$vendorId) {
+                return $record;
+            }
+        }
+        return null;
+    }
+    
     private function updateRankings()
     {
         Log::info('Start to re-ranking');
         
-        function findMatchingRecord($records, $vendorId) {
-            foreach ($records as $record) {
-                if ((int)$record['vendor_id'] === (int)$vendorId) {
-                    return $record;
-                }
-            }
-            return null;
-        }
 
         $latestDate = HNCount::max('date');
         
