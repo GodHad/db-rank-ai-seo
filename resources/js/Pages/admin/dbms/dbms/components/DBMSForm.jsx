@@ -406,7 +406,7 @@ export default function VendorForm({ vendor, categories, setOpenedPage }) {
                     <CustomInput type="text" title="Contact Info" name="contact" value={form.contact || ''} handleChangeForm={handleChangeForm} textColor={textColor} brandStars={brandStars} />
                 </FormControl>
                 <FormControl display={'flex'} justifyContent={'space-between'} flexDir={{ base: 'column', md: 'row' }} gap={{ md: 6, base: 2 }} alignItems={'center'}>
-                    <CustomInput type="text" title="Git Repo Url (e.g. mongodb/mongo)" name="giturl" value={form.giturl || ''} handleChangeForm={handleChangeForm} textColor={textColor} brandStars={brandStars} />
+                    <CustomInput type="text" title="Git Repo Urls (e.g. mongodb/mongo, mongodb/laravel-mongodb)" name="giturl" value={form.giturl || ''} handleChangeForm={handleChangeForm} textColor={textColor} brandStars={brandStars} />
                 </FormControl>
                 <FormControl mb={'24px'}>
                     <FormLabel

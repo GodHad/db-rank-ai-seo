@@ -229,43 +229,79 @@ class FetchTrends extends Command
         return $monthlyCounts;
     }
 
-    private function fetchGitHubStars($from, $to, $keyword)
+    private function fetchGitHubStars($from, $to, $keywords)
     {
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-        ])->get('https://api.ossinsight.io/v1/repos/' . $keyword . '/stargazers/history', [
-            'per' => 'month',
-            'from' => $from,
-            'to' => $to,
-        ]);
+        $totalStarChanges = [];
 
-        $result = [];
-        $data = $response->json()['data']['rows'];
-        foreach ($data as $index => $entry) {
-            if ($index === 0) continue;
-            $result[$entry['date']] = (int)$entry['stargazers'] - (int)$data[$index - 1]['stargazers'];
+        $repos = explode(',', $keywords);
+
+        foreach ($repos as $repo) {
+            $repo = trim($repo);
+
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+            ])->get("https://api.ossinsight.io/v1/repos/$repo/stargazers/history", [
+                'per' => 'month',
+                'from' => $from,
+                'to' => $to,
+            ]);
+
+            if ($response->failed()) continue;
+            $data = $response->json()['data']['rows'];
+
+            foreach ($data as $index => $entry) {
+                if ($index === 0) continue;
+
+                $date = $entry['date'];
+                $starChange = (int)$entry['stargazers'] - (int)$data[$index - 1]['stargazers'];
+
+                if (isset($totalStarChanges[$date])) {
+                    $totalStarChanges[$date] += $starChange;
+                } else {
+                    $totalStarChanges[$date] = $starChange;
+                }
+            }
         }
-        
-        return $result;
+
+        return $totalStarChanges;
     }
 
-    private function fetchGitHubPulls($from, $to, $keyword)
-    {
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-        ])->get('https://api.ossinsight.io/v1/repos/' . $keyword . '/pull_request_creators/history', [
-            'per' => 'month',
-            'from' => $from,
-            'to' => $to,
-        ]);
 
-        $result = [];
-        $data = $response->json()['data']['rows'];
-        foreach ($data as $index => $entry) {
-            if ($index === 0) continue;
-            $result[$entry['date']] = (int)$entry['pull_request_creators'] - (int)$data[$index - 1]['pull_request_creators'];
+    private function fetchGitHubPulls($from, $to, $keywords)
+    {
+        $totalPullRequestChanges = [];
+
+        $repos = explode(',', $keywords);
+
+        foreach ($repos as $repo) {
+            $repo = trim($repo);
+
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+            ])->get("https://api.ossinsight.io/v1/repos/$repo/pull_request_creators/history", [
+                'per' => 'month',
+                'from' => $from,
+                'to' => $to,
+            ]);
+
+            if ($response->failed()) continue;
+            $data = $response->json()['data']['rows'];
+
+            foreach ($data as $index => $entry) {
+                if ($index === 0) continue;
+
+                $date = $entry['date'];
+                $pullRequestChange = (int)$entry['pull_request_creators'] - (int)$data[$index - 1]['pull_request_creators'];
+
+                if (isset($totalPullRequestChanges[$date])) {
+                    $totalPullRequestChanges[$date] += $pullRequestChange;
+                } else {
+                    $totalPullRequestChanges[$date] = $pullRequestChange;
+                }
+            }
         }
-        
-        return $result;
+
+        return $totalPullRequestChanges;
     }
+
 }
