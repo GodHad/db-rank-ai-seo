@@ -9,9 +9,7 @@ import {
     useColorModeValue,
     Tooltip,
 } from '@chakra-ui/react';
-import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { Select } from 'chakra-react-select';
-import countryList from 'react-select-country-list';
+import React, { useState, useEffect, useContext } from 'react'
 import Card from '@/components/card/Card';
 import { MdAutoGraph, MdTableView } from 'react-icons/md'
 import { useQuery } from 'react-query';
@@ -30,17 +28,10 @@ export default function Ranking({ content, route }) {
     const textColor = useColorModeValue('secondaryGray.900', 'white');
     let secondaryText = useColorModeValue('gray.700', 'white');
 
-    const [country, setCountry] = useState({ value: ' ', label: 'WorldWide' });
-
-    const handleChangeCountry = value => {
-        setCountry(value);
-    }
-
     const { data: vendors = [] } = useQuery(
-        [`vendors`, country],
-        () => getVendors(country.value),
+        [`vendors`],
+        () => getVendors(),
         {
-            enabled: !!country,
             staleTime: 300000
         }
     );
@@ -80,8 +71,6 @@ export default function Ranking({ content, route }) {
     useEffect(() => {
         if (categories) setOptions([{ id: 0, value: 'all', label: 'All DBMS' }].concat(categories.map(category => ({ id: category.id, label: category.title, value: category.title }))))
     }, [categories])
-
-    const countryOptions = useMemo(() => [{ value: ' ', label: 'WorldWide' }].concat(countryList().getData()), [{ value: ' ', label: 'WorldWide' }])
 
     return (
         <UserLayout>
@@ -126,18 +115,6 @@ export default function Ranking({ content, route }) {
                                 DB Ranking {options && ('for ' + options[showingCategory].label)}
                             </Text>
                             <Box display={"flex"} gap={2} alignItems={"center"} justifyContent={{ base: 'right', md: 'inherit' }}>
-                                <Select
-                                    options={countryOptions}
-                                    value={country}
-                                    onChange={handleChangeCountry}
-                                    isSearchable
-                                    chakraStyles={{
-                                        container: (provided) => ({
-                                            ...provided,
-                                            width: '200px', // Set the container width here
-                                        }),
-                                    }}
-                                />
                                 <ReactLink href={route === 'table-view' ? '/ranking/chart-view' : '/ranking'}>
                                     <Tooltip label={route === 'table-view' ? 'Chart View' : 'Table View'}>
                                         <IconButton
@@ -182,7 +159,7 @@ export default function Ranking({ content, route }) {
                             }}
                         >
                             {route === 'table-view' && <RankTable data={data} vendors={vendors} isLoadingCategory={isLoadingCategory} categories={categories} />}
-                            {(route === 'chart-view' && typeof window !== 'undefined') && <RankChart showingCategory={options[showingCategory].id} country={country} />}
+                            {(route === 'chart-view' && typeof window !== 'undefined') && <RankChart showingCategory={options[showingCategory].id} />}
                         </Box>
                     </Box>
                 </Flex>

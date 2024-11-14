@@ -18,15 +18,14 @@ import {
     Skeleton,
 } from "@chakra-ui/skeleton";
 
-const getTrendsDataAndXaxisValue = async (country) => {
-    const res = await axios.get(`/api/get-trends-data-for-chart?country=${country}`);
+const getTrendsDataAndXaxisValue = async () => {
+    const res = await axios.get(`/api/get-trends-data-for-chart`);
     return res.data;
 }
 
 export default function RankChart(props) {
-    const { showingCategory, country } = props;
+    const { showingCategory } = props;
     const legendPosition = useBreakpointValue({ base: 'bottom', md: 'right' });
-    const [loading, setLoading] = useState(true);
     const textColorSecondary = useColorModeValue("secondaryGray.600", "white");
 
     const [AppexChart, setAppexChart] = useState(null);
@@ -101,10 +100,9 @@ export default function RankChart(props) {
     });
 
     const { data } = useQuery(
-        [`getTrends-${country}`, country],
-        () => getTrendsDataAndXaxisValue(country.value),
+        `getTrends`,
+        () => getTrendsDataAndXaxisValue(),
         {
-            enabled: !!country,
             staleTime: 300000,
         },
     );
@@ -119,9 +117,8 @@ export default function RankChart(props) {
                 xaxis: { ...prevState.xaxis, categories: data.xaxis || ["SEP", "OCT", "NOV", "DEC", "JAN", "FEB"] }
             }))
             setLineChartDataTotalSpent(chartData || [{ name: "Sample", data: [0, 10, 20, 30, 40, 50] }]);
-            setLoading(false);
         }
-    }, [showingCategory, country.value, data])
+    }, [showingCategory, data])
 
     return (
         <Box>
