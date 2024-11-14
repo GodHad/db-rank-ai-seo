@@ -38,7 +38,7 @@ class ProcessAfterDbmsCreation implements ShouldQueue
         ini_set('max_execution_time', 300); // 5 minutes
         Log::info('start to fetching...');
         try {
-            Artisan::call('fetch:trends', ['keywords' => $this->dbms]);
+            Artisan::call('fetch:trends', ['id' => $this->dbms]);
 
             // Log a summary of the command's output
             $output = Artisan::output();
