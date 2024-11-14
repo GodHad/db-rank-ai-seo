@@ -250,6 +250,7 @@ export default function CompareDBMS({ slug }) {
                       borderColor={borderColor}
                       width={'300px'}
                       className='no-border-editor'
+                      style={{verticalAlign: 'initial'}}
                     >
                       <CustomCKEditor content={dbms.extra_content} />
                     </Td>))
