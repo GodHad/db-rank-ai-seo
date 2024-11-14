@@ -122,7 +122,7 @@ class FetchTrends extends Command
         }
         return null;
     }
-    
+
     private function updateRankings()
     {
         Log::info('Start to re-ranking');
@@ -142,8 +142,8 @@ class FetchTrends extends Command
         foreach ($hnCounts as $hnCount) {
             $vendorId = $hnCount['vendor_id'];
         
-            $matchingStar = findMatchingRecord($githubStars, $vendorId);
-            $matchingPull = findMatchingRecord($githubPulls, $vendorId);
+            $matchingStar = $this->findMatchingRecord($githubStars, $vendorId);
+            $matchingPull = $this->findMatchingRecord($githubPulls, $vendorId);
 
             if ($matchingStar && $matchingPull) {
                 $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount +
