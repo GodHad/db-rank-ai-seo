@@ -140,7 +140,7 @@ export default function RankChart(props) {
                             color={textColorSecondary}
                             me='4px'
                         />
-                        Past a year
+                        Past Year
                     </Text>
                 </div>
                 <Flex w='100%' flexDirection={{ base: "column", lg: "row" }}>
