@@ -149,3 +149,7 @@ body.chakra-ui-dark .ck-editor__editable {
 .ck-balloon-panel {
   z-index: 1300000 !important;
 }
+
+.link-dbms-category:hover {
+  text-decoration: underline;
+}

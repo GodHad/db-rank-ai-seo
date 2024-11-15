@@ -94,8 +94,8 @@ export default function DBMS({ selectedDBMS, slug }) {
                     <span style="margin-right: 8px; line-height: 36px;">Rank:</span> #${selectedDBMS.overall_ranking ? selectedDBMS.overall_ranking : 'N/A'} Overall<br>
                     ${selectedDBMS.primary_category.map((category, index) => (`<span style="margin-right: 8px; line-height: 36px; opacity: 0">Rank: </span> #${primaryRanking[index]} ${category.shortname}<br>`)).join(' ')}
                 `,
-                    primary_category: selectedDBMS.primary_category.map(category => category.title).join(', '),
-                    secondary_category: selectedDBMS.secondary_category.map(category => category.title).join(', '),
+                    primary_category: selectedDBMS.primary_category.map(category => `<a class="link-dbms-category" href="/ranking?category=${category.id}">${category.title}</a>`).join(', '),
+                    secondary_category: selectedDBMS.secondary_category.map(category => `<a class="link-dbms-category" href="/ranking?category=${category.id}">${category.title}</a>`).join(', '),
                 }
             })
         }

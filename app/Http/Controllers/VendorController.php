@@ -25,6 +25,46 @@ use Inertia\Response as InertiaResponse;
 
 class VendorController extends Controller
 {
+
+    private function findMatchingRecord($records, $vendorId) {
+        foreach ($records as $record) {
+            if ((int)$record['vendor_id'] === (int)$vendorId) {
+                return $record;
+            }
+        }
+        return null;
+    }
+
+    private function getAverageTrends($startDate, $endDate, $country) {
+        $hnCounts = HNCount::where('date', $startDate)->get()->toArray();
+        $githubStars = GHStar::where('date', $startDate)->get()->toArray();
+        $githubPulls = GHPull::where('date', $startDate)->get()->toArray();
+        
+        $maxHNCount = collect($hnCounts)->max('count');
+        $maxGHStar = collect($githubStars)->max('count');
+        $maxGHPull = collect($githubPulls)->max('count');
+        
+        $averageScores = [];
+        foreach ($hnCounts as $hnCount) {
+            $vendorId = $hnCount['vendor_id'];
+        
+            $matchingStar = $this->findMatchingRecord($githubStars, $vendorId);
+            $matchingPull = $this->findMatchingRecord($githubPulls, $vendorId);
+
+            $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount;
+            if (isset($matchingStar)) {
+                $averageScores[$vendorId] += $matchingStar['count'] * 25 / $maxGHStar;
+            } 
+            if (isset($matchingPull)) {
+                $averageScores[$vendorId] += $matchingPull['count'] * 25 / $maxGHPull;
+            }
+        }
+        arsort($averageScores);
+
+        return $averageScores;
+    }
+
+
     public function vendors(Request $request)
     {
         try {
@@ -47,47 +87,10 @@ class VendorController extends Controller
 
             $country = $request->query('country');
 
-            function findMatchingRecord($records, $vendorId) {
-                foreach ($records as $record) {
-                    if ((int)$record['vendor_id'] === (int)$vendorId) {
-                        return $record;
-                    }
-                }
-                return null;
-            }
-
-            function getAverageTrends($startDate, $endDate, $country) {
-                $hnCounts = HNCount::where('date', $startDate)->get()->toArray();
-                $githubStars = GHStar::where('date', $startDate)->get()->toArray();
-                $githubPulls = GHPull::where('date', $startDate)->get()->toArray();
-                
-                $maxHNCount = collect($hnCounts)->max('count');
-                $maxGHStar = collect($githubStars)->max('count');
-                $maxGHPull = collect($githubPulls)->max('count');
-                
-                $averageScores = [];
-                foreach ($hnCounts as $hnCount) {
-                    $vendorId = $hnCount['vendor_id'];
-                
-                    $matchingStar = findMatchingRecord($githubStars, $vendorId);
-                    $matchingPull = findMatchingRecord($githubPulls, $vendorId);
-        
-                    $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount;
-                    if (isset($matchingStar)) {
-                        $averageScores[$vendorId] += $matchingStar['count'] * 25 / $maxGHStar;
-                    } 
-                    if (isset($matchingPull)) {
-                        $averageScores[$vendorId] += $matchingPull['count'] * 25 / $maxGHPull;
-                    }
-                }
-                arsort($averageScores);
-
-                return $averageScores;
-            }
-
-            $currentMonthTrends = getAverageTrends($currentMonthStart, $currentMonthEnd, $country);
-            $previousMonthTrends = getAverageTrends($previousMonthStart, $previousMonthEnd, $country);
-            $previousYearTrends = getAverageTrends($previousYearStart, $previousYearEnd, $country);
+            
+            $currentMonthTrends = $this->getAverageTrends($currentMonthStart, $currentMonthEnd, $country);
+            $previousMonthTrends = $this->getAverageTrends($previousMonthStart, $previousMonthEnd, $country);
+            $previousYearTrends = $this->getAverageTrends($previousYearStart, $previousYearEnd, $country);
 
             $rank = 1;
             foreach ($currentMonthTrends as $vendorId => $trend) {
@@ -504,7 +507,7 @@ class VendorController extends Controller
         return Inertia::render('user/dbms/components/DBMS', ['slug' => $slug, 'selectedDBMS' => $vendor]);
     }
 
-    public function renderCompareDBMS($slug): InertiaResponse
+    public function renderCompareDBMS($slug = ''): InertiaResponse
     {
         return Inertia::render('user/dbms/components/CompareDBMS', ['slug' => $slug]);
     }

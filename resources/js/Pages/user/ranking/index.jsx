@@ -23,7 +23,7 @@ import RankChart from './component/RankCharts';
 import SeoHeader from '../components/SeoHeader';
 import CustomCKEditor from '../components/CustomCKEditor';
 
-export default function Ranking({ content, route }) {
+export default function Ranking({ content, route, category }) {
     const { vendors: data, setVendors: setData } = useContext(DBMSContext);
     const textColor = useColorModeValue('secondaryGray.900', 'white');
     let secondaryText = useColorModeValue('gray.700', 'white');
@@ -52,8 +52,7 @@ export default function Ranking({ content, route }) {
     );
     const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 
-    const [showingCategory, setShowingCategory] = useState(0);
-
+    const [showingCategory, setShowingCategory] = useState(Number(category));
     useEffect(() => {
         if (showingCategory === 0) setData(vendors);
         else {
@@ -66,12 +65,12 @@ export default function Ranking({ content, route }) {
         }
     }, [showingCategory, setData, vendors])
 
-    const [options, setOptions] = useState([{ id: 0, value: 'all', label: 'All DBMS' }]);
+    const [options, setOptions] = useState(null);
 
     useEffect(() => {
         if (categories) setOptions([{ id: 0, value: 'all', label: 'All DBMS' }].concat(categories.map(category => ({ id: category.id, label: category.title, value: category.title }))))
     }, [categories])
-
+    console.log(options)
     return (
         <UserLayout>
             <SeoHeader content={content} title={'DBMS Ranking'} />
@@ -82,7 +81,7 @@ export default function Ranking({ content, route }) {
                 minH="calc(100vh - 150px)"
                 overflowX={{ sm: 'auto', lg: 'hidden' }}
             >
-                <Sidebar categories={options} showingCategory={showingCategory} setShowingCategory={setShowingCategory} />
+                {options && <Sidebar categories={options} showingCategory={showingCategory} setShowingCategory={setShowingCategory} />}
                 <Flex justifyContent={"flex-end"}>
                     <Box
                         width={{ xl: 'calc(100% - 290px)', base: '100%' }}
@@ -112,7 +111,7 @@ export default function Ranking({ content, route }) {
                                 fontWeight="700"
                                 lineHeight="100%"
                             >
-                                DB Ranking {options && ('for ' + options[showingCategory].label)}
+                                DB Ranking {options && ('for ' + options.find(option => option.id === showingCategory).label)}
                             </Text>
                             <Box display={"flex"} gap={2} alignItems={"center"} justifyContent={{ base: 'right', md: 'inherit' }}>
                                 <ReactLink href={route === 'table-view' ? '/ranking/chart-view' : '/ranking'}>
@@ -133,7 +132,7 @@ export default function Ranking({ content, route }) {
                                         </IconButton>
                                     </Tooltip>
                                 </ReactLink>
-                                <SidebarResponsive categories={options} showingCategory={showingCategory} setShowingCategory={setShowingCategory} />
+                                {options && <SidebarResponsive categories={options} showingCategory={showingCategory} setShowingCategory={setShowingCategory} />}
                             </Box>
                         </Flex>
                         <Box px={'25px'}>

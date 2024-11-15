@@ -25,8 +25,8 @@ Route::get('/ranking', [RankingController::class, 'renderTable']);
 Route::get('/ranking/chart-view', [RankingController::class, 'renderChart']);
 
 Route::get('/dbms', [VendorController::class, 'render']);
+Route::get('/dbms/compare/{slug?}', [VendorController::class, 'renderCompareDBMS']);
 Route::get('/dbms/{slug}', [VendorController::class, 'renderDBMS']);
-Route::get('/dbms/compare/{slug}', [VendorController::class, 'renderCompareDBMS']);
 Route::get('/dbms/claim-dbms/{slug}', [VendorController::class, 'renderClaimDBMS']);
 
 Route::get('/encyclopedia', [EncyclopediaController::class, 'render']);
@@ -47,9 +47,6 @@ Route::get('/profile', [VendorRequestController::class, 'renderProfile']);
 Route::get('/contact-us', [ContactController::class, 'render']);
 
 Route::get('/sign-in', [LoginController::class, 'render']);
-Route::get('/not-found', function() {
-    return Inertia::render('NotFound');
-});
 
 Route::middleware(['admin'])->group(function () {
     Route::get('/admin', function () {
@@ -64,4 +61,8 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin/featured-products', [AdminInertiaController::class, 'renderFeaturedProducts']);
     Route::get('/admin/meta-data', [AdminInertiaController::class, 'renderMetaData']);
     Route::get('/admin/suggested-questions', [SuggestedQuestionController::class, 'render']);
+});
+
+Route::get('/not-found', function() {
+    return Inertia::render('NotFound');
 });

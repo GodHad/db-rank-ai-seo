@@ -14,7 +14,7 @@ export function SidebarLinks(props) {
     return categories.map((category, index) => (
       <Text
         fontSize={"md"}
-        color={index === showingCategory ? activeColor : textColor}
+        color={category.id === showingCategory ? activeColor : textColor}
         fontWeight='bold'
         mx='auto'
         pt='10px'
@@ -24,7 +24,7 @@ export function SidebarLinks(props) {
         }}
         cursor={"pointer"}
         key={index}
-        onClick={() => setShowingCategory(index)}
+        onClick={() => setShowingCategory(category.id)}
       >
         {category.label}
       </Text>

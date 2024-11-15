@@ -50,7 +50,9 @@ export default function CompareDBMS({ slug }) {
   }, [vendors, slug]);
 
   useEffect(() => {
-    if (selectedDBMS.length !== dbmsNames.length && vendors.length !== 0 && _vendors) Inertia.visit('/not-found');
+    if (slug !== '' && selectedDBMS.length !== dbmsNames.length && vendors.length !== 0 && _vendors) {
+      Inertia.visit('/not-found');
+    }
   }, [selectedDBMS, vendors, _vendors])
 
   const textColor = useColorModeValue('secondaryGray.900', 'white');
@@ -72,8 +74,8 @@ export default function CompareDBMS({ slug }) {
           <span style="margin-right: 8px">Rank:</span> #${dbms.overall_ranking} Overall<br>
           ${dbms.primary_category.map((category, index) => (`<span style="margin-right: 8px; opacity: 0">Rank: </span> #${primaryRanking[index]} ${category.shortname}`)).join('<br />')}
       `,
-        primary_category: dbms.primary_category.map(category => category.title).join('<br />'),
-        secondary_category: dbms.secondary_category.map(category => category.title).join('<br />'),
+        primary_category: dbms.primary_category.map(category => `<a class="link-dbms-category" href="/ranking?category=${category.id}">${category.title}</a>`).join(', '),
+        secondary_category: dbms.secondary_category.map(category => `<a class="link-dbms-category" href="/ranking?category=${category.id}">${category.title}</a>`).join(', '),
       }
     }))
 
@@ -202,63 +204,65 @@ export default function CompareDBMS({ slug }) {
                 borderRadius: '20px',
               },
             }}>
-            <ChakraTable variant="simple" color="gray.500" mb="24px" mt="12px" style={{ tableLayout: 'fixed' }}>
-              <Tbody>
-                {headers.map(header => (
-                  <Tr key={header.key}>
-                    <Th
-                      pe="10px"
-                      borderColor={borderColor}
-                      width={'150px'}
-                    >
-                      {header.name}
-                    </Th>
-                    {data && data.length > 0 ? data.map((dbms, index) => {
-                      return (
+            {slug !== '' &&
+              <ChakraTable variant="simple" color="gray.500" mb="24px" mt="12px" style={{ tableLayout: 'fixed' }}>
+                <Tbody>
+                  {headers.map(header => (
+                    <Tr key={header.key}>
+                      <Th
+                        pe="10px"
+                        borderColor={borderColor}
+                        width={'150px'}
+                      >
+                        {header.name}
+                      </Th>
+                      {data && data.length > 0 ? data.map((dbms, index) => {
+                        return (
+                          <Td
+                            key={dbms.id}
+                            pe="10px"
+                            borderColor={borderColor}
+                            width={'300px'}
+                          >
+                            <Text
+                              color={textColor}
+                              mb="4px"
+                              fontWeight="500"
+                              lineHeight="120%"
+                              dangerouslySetInnerHTML={{ __html: dbms[header.key] }}
+                            />
+                          </Td>
+                        )
+                      }) : (
                         <Td
-                          key={dbms.id}
                           pe="10px"
                           borderColor={borderColor}
                           width={'300px'}
                         >
-                          <Text
-                            color={textColor}
-                            mb="4px"
-                            fontWeight="500"
-                            lineHeight="120%"
-                            dangerouslySetInnerHTML={{ __html: dbms[header.key] }}
-                          />
+                          <Skeleton width={'300px'} height={"30px"} borderRadius={"12px"} />
                         </Td>
-                      )
-                    }) : (
+                      )}
+                    </Tr>
+                  ))}
+                  <Tr>
+                    <Td></Td>
+                    {data && data.length > 0 ? data.map((dbms, index) => (
                       <Td
+                        key={dbms.id}
                         pe="10px"
                         borderColor={borderColor}
                         width={'300px'}
+                        className='no-border-editor'
+                        style={{ verticalAlign: 'initial' }}
                       >
-                        <Skeleton width={'300px'} height={"30px"} borderRadius={"12px"} />
-                      </Td>
-                    )}
+                        <CustomCKEditor content={dbms.extra_content} />
+                      </Td>))
+                      : <Td colSpan={2}><Skeleton width={'300px'} height={"30px"} borderRadius={"12px"} /></Td>
+                    }
                   </Tr>
-                ))}
-                <Tr>
-                  <Td></Td>
-                  {data && data.length > 0 ? data.map((dbms, index) => (
-                    <Td
-                      key={dbms.id}
-                      pe="10px"
-                      borderColor={borderColor}
-                      width={'300px'}
-                      className='no-border-editor'
-                      style={{verticalAlign: 'initial'}}
-                    >
-                      <CustomCKEditor content={dbms.extra_content} />
-                    </Td>))
-                    : <Td colSpan={2}><Skeleton width={'300px'} height={"30px"} borderRadius={"12px"} /></Td>
-                  }
-                </Tr>
-              </Tbody>
-            </ChakraTable>
+                </Tbody>
+              </ChakraTable>
+            }
           </Box>
         </Card>
       </Box>
