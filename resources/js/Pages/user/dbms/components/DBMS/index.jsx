@@ -166,7 +166,7 @@ export default function DBMS({ selectedDBMS, slug }) {
                                         mb={5}
                                         w="100%"
                                         maxH={'191px'}
-                                        objectFit="cover"
+                                        objectFit="contain"
                                         objectPosition="center"
                                         src={`${APP_URL}storage/${selectedDBMS.banner}?w=1400&auto=compression,format`}
                                         alt={selectedDBMS.db_name}
@@ -199,7 +199,7 @@ export default function DBMS({ selectedDBMS, slug }) {
                                                 mx={5}
                                                 w="172px"
                                                 h={'172px'}
-                                                objectFit="cover"
+                                                objectFit="contain"
                                                 objectPosition="center"
                                                 border={borderColor}
                                                 borderStyle={'solid'}

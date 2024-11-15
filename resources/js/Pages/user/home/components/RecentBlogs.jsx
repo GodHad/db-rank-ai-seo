@@ -73,8 +73,7 @@ export default () => {
                         h="200px"
                         w="100%"
                         borderRadius="xl"
-                        objectFit="cover"
-                        objectPosition="center"
+                        objectFit="contain"
                         transition="transform 0.2s ease-out"
                         _hover={{ transform: "scale(1.02)" }}
                         src={`storage/${blog.featured_images[0].url}?w=1400&auto=compression,format`}

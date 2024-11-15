@@ -71,7 +71,7 @@ export default ({ blog, route }) => {
                                 w="100%"
                                 h={{ md: '300px', base: '250px' }}
                                 borderRadius="xl"
-                                objectFit="cover"
+                                objectFit="contain"
                                 objectPosition="center"
                                 src={`${APP_URL}storage/${blog.featured_images[0].url}?w=1400&auhref=compression,format`}
                                 alt={blog.title}
