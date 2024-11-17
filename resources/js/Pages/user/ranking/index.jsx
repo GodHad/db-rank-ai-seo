@@ -52,7 +52,7 @@ export default function Ranking({ content, route, category }) {
     );
     const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 
-    const [showingCategory, setShowingCategory] = useState(Number(category));
+    const [showingCategory, setShowingCategory] = useState(Number(category) || 0);
     useEffect(() => {
         if (showingCategory === 0) setData(vendors);
         else {
@@ -70,7 +70,6 @@ export default function Ranking({ content, route, category }) {
     useEffect(() => {
         if (categories) setOptions([{ id: 0, value: 'all', label: 'All DBMS' }].concat(categories.map(category => ({ id: category.id, label: category.title, value: category.title }))))
     }, [categories])
-    console.log(options)
     return (
         <UserLayout>
             <SeoHeader content={content} title={'DBMS Ranking'} />
@@ -158,7 +157,7 @@ export default function Ranking({ content, route, category }) {
                             }}
                         >
                             {route === 'table-view' && <RankTable data={data} vendors={vendors} isLoadingCategory={isLoadingCategory} categories={categories} />}
-                            {(route === 'chart-view' && typeof window !== 'undefined') && <RankChart showingCategory={options[showingCategory].id} />}
+                            {(route === 'chart-view' && typeof window !== 'undefined') && <RankChart showingCategory={options ? options[showingCategory].id : 0} />}
                         </Box>
                     </Box>
                 </Flex>

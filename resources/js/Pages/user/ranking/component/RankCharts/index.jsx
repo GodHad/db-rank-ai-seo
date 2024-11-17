@@ -99,7 +99,7 @@ export default function RankChart(props) {
         }
     });
 
-    const { data } = useQuery(
+    const { data, isLoading } = useQuery(
         `getTrends`,
         () => getTrendsDataAndXaxisValue(),
         {
@@ -145,7 +145,7 @@ export default function RankChart(props) {
                 </div>
                 <Flex w='100%' flexDirection={{ base: "column", lg: "row" }}>
                     <Box h={"650px"} w={"100%"} mt='auto'>
-                        {(chartLoaded && AppexChart) ? (
+                        {(chartLoaded && AppexChart && !isLoading) ? (
                             <AppexChart
                                 options={lineChartOptionsTotalSpent || {}}
                                 series={lineChartDataTotalSpent || []}
