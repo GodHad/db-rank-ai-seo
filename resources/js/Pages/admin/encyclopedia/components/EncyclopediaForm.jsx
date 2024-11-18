@@ -104,7 +104,7 @@ export default function EncyclopediaForm({ encyclopedia, setOpenedPage }) {
                 title: "Failed to create Encyclopedia",
                 description: key,
                 position: 'top-right',
-                status: "success",
+                status: "error",
                 insert: "top",
                 duration: 5000,
                 isClosable: true
