@@ -145,7 +145,7 @@ class FeaturedProductController extends Controller
                 return response()->json(['success' => false, 'error' => 'Featured product not found'], 404);
             }
 
-            Storage::disk('public')->delete($featured_product->banner);
+            if (isset($featured_product->banner)) Storage::disk('public')->delete($featured_product->banner);
             $featured_product->delete();
             return response()->json(['success' => true]);
         } catch (\Exception $th) {

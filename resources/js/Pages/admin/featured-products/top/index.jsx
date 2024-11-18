@@ -83,7 +83,7 @@ export default function FeaturedProduct() {
 
     const handleDeleteFeaturedProduct = useMutation(deleteFeaturedProduct, {
         onSuccess: () => {
-            queryClient.invalidateQueries('topfeatured_products');
+            queryClient.invalidateQueries('top_featured_products');
             toast({
                 title: "Delete featured product successfully",
                 position: 'top-right',
