@@ -39,8 +39,11 @@ class EncyclopediaController extends Controller
         
         if ($validator->fails()) return response()->json(['errors' => $validator->errors()], 422);
 
-        $og_graph_image = $request->file('og_graph_file')->store('images/encyclopedia/og_graph_images', 'public');
-        $twitter_graph_image = $request->file('twitter_graph_file')->store('images/encyclopedia/twitter_graph_images', 'public');
+        $og_graph_image = null;
+        $twitter_graph_image = null;
+
+        if ($request->has('og_graph_file')) $og_graph_image = $request->file('og_graph_file')->store('images/encyclopedia/og_graph_images', 'public');
+        if ($request->has('twitter_graph_file')) $twitter_graph_image = $request->file('twitter_graph_file')->store('images/encyclopedia/twitter_graph_images', 'public');
 
         Encyclopedia::create([
             ...$validator->validated(),
