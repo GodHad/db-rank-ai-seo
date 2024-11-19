@@ -26,7 +26,8 @@ use Inertia\Response as InertiaResponse;
 class VendorController extends Controller
 {
 
-    private function findMatchingRecord($records, $vendorId) {
+    private function findMatchingRecord($records, $vendorId)
+    {
         foreach ($records as $record) {
             if ((int)$record['vendor_id'] === (int)$vendorId) {
                 return $record;
@@ -35,26 +36,27 @@ class VendorController extends Controller
         return null;
     }
 
-    private function getAverageTrends($startDate, $endDate, $country) {
+    private function getAverageTrends($startDate)
+    {
         $hnCounts = HNCount::where('date', $startDate)->get()->toArray();
         $githubStars = GHStar::where('date', $startDate)->get()->toArray();
         $githubPulls = GHPull::where('date', $startDate)->get()->toArray();
-        
+
         $maxHNCount = collect($hnCounts)->max('count');
         $maxGHStar = collect($githubStars)->max('count');
         $maxGHPull = collect($githubPulls)->max('count');
-        
+
         $averageScores = [];
         foreach ($hnCounts as $hnCount) {
             $vendorId = $hnCount['vendor_id'];
-        
+
             $matchingStar = $this->findMatchingRecord($githubStars, $vendorId);
             $matchingPull = $this->findMatchingRecord($githubPulls, $vendorId);
 
             $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount;
             if (isset($matchingStar)) {
                 $averageScores[$vendorId] += $matchingStar['count'] * 25 / $maxGHStar;
-            } 
+            }
             if (isset($matchingPull)) {
                 $averageScores[$vendorId] += $matchingPull['count'] * 25 / $maxGHPull;
             }
@@ -75,28 +77,22 @@ class VendorController extends Controller
 
             $currentMonth = $now->copy()->subMonthNoOverflow();
             $currentMonthStart = $currentMonth->startOfMonth()->format('Y-m-d');
-            $currentMonthEnd = $currentMonth->endOfMonth()->format('Y-m-d');
 
             $previousMonth = $currentMonth->copy()->subMonthNoOverflow();
             $previousMonthStart = $previousMonth->startOfMonth()->format('Y-m-d');
-            $previousMonthEnd = $previousMonth->endOfMonth()->format('Y-m-d');
 
             $previousYear = $now->copy()->subYearNoOverflow();
             $previousYearStart = $previousYear->startOfMonth()->format('Y-m-d');
-            $previousYearEnd = $previousYear->endOfMonth()->format('Y-m-d');
 
-            $country = $request->query('country');
-
-            
-            $currentMonthTrends = $this->getAverageTrends($currentMonthStart, $currentMonthEnd, $country);
-            $previousMonthTrends = $this->getAverageTrends($previousMonthStart, $previousMonthEnd, $country);
-            $previousYearTrends = $this->getAverageTrends($previousYearStart, $previousYearEnd, $country);
+            $currentMonthTrends = $this->getAverageTrends($currentMonthStart);
+            $previousMonthTrends = $this->getAverageTrends($previousMonthStart);
+            $previousYearTrends = $this->getAverageTrends($previousYearStart);
 
             $rank = 1;
             foreach ($currentMonthTrends as $vendorId => $trend) {
                 foreach ($vendors as $vendor) {
                     if ($vendor->id === $vendorId) {
-                        $vendor->overall_ranking = $rank ++;
+                        $vendor->overall_ranking = $rank++;
                         $vendor->overall_avg_score = $trend;
                         break;
                     }
@@ -107,7 +103,7 @@ class VendorController extends Controller
             foreach ($previousMonthTrends as $vendorId => $trend) {
                 foreach ($vendors as $vendor) {
                     if ($vendor->id === $vendorId) {
-                        $vendor->prev_month_overall_ranking = $rank ++;
+                        $vendor->prev_month_overall_ranking = $rank++;
                         $vendor->prev_month_overall_avg_score = $trend;
                         break;
                     }
@@ -118,7 +114,7 @@ class VendorController extends Controller
             foreach ($previousYearTrends as $vendorId => $trend) {
                 foreach ($vendors as $vendor) {
                     if ($vendor->id === $vendorId) {
-                        $vendor->prev_year_overall_ranking = $rank ++;
+                        $vendor->prev_year_overall_ranking = $rank++;
                         $vendor->prev_year_overall_avg_score = $trend;
                         break;
                     }
@@ -203,7 +199,7 @@ class VendorController extends Controller
             $twitter_graph_image = null;
             if ($request->hasFile('og_graph_file'))
                 $og_graph_image = $request->file('og_graph_file')->store('images/vendors/og_graph_images', 'public');
-            if($request->hasFile('twitter_graph_file'))
+            if ($request->hasFile('twitter_graph_file'))
                 $twitter_graph_image = $request->file('twitter_graph_file')->store('images/vendors/twitter_graph_images', 'public');
 
             $vendor = Vendor::create([
@@ -213,7 +209,7 @@ class VendorController extends Controller
                 'og_graph_image' => $og_graph_image,
                 'twitter_graph_image' => $twitter_graph_image
             ]);
-            
+
             $primary_category = $data['primary_category'];
             if (isset($data['secondary_category'])) {
                 $secondary_category = $data['secondary_category'];
@@ -232,7 +228,7 @@ class VendorController extends Controller
                     'vendor_id' => $vendor->id,
                 ];
             }, $primary_category);
-            
+
             PrimaryCategoryVendor::insert($primaryData);
 
             ProcessAfterDbmsCreation::dispatch($vendor->id);
@@ -357,10 +353,10 @@ class VendorController extends Controller
                         'vendor_id' => $vendor->id,
                     ];
                 }, $secondary_category);
-                
+
                 SecondaryCategoryVendor::insert($secondaryData);
             }
-            
+
             $primary_category = $data['primary_category'];
             PrimaryCategoryVendor::where('vendor_id', $vendor->id)->delete();
 
@@ -370,8 +366,8 @@ class VendorController extends Controller
                     'vendor_id' => $vendor->id,
                 ];
             }, $primary_category);
-            
-            
+
+
             PrimaryCategoryVendor::insert($primaryData);
 
             if ($dbNameChanged) {
@@ -418,7 +414,6 @@ class VendorController extends Controller
             $vendor = Vendor::findOrFail($id);
             $vendor->increment('profile_views');
             return response()->json(['success' => true]);
-
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'error' => 'Failed to update views'], 500);
         }
@@ -429,7 +424,7 @@ class VendorController extends Controller
         Mail::raw('This is a test email from Laravel using Amazon SES!', function ($message) {
             $message->from('sunharius@gmail.com');
             $message->to('office@dbrank.ai')
-                    ->subject('Test SES Email');
+                ->subject('Test SES Email');
         });
         return response()->json(['success' => true]);
     }
@@ -443,8 +438,8 @@ class VendorController extends Controller
     private function getDBMSBySlug($slug)
     {
         return Vendor::with(['primaryCategory', 'secondaryCategory', 'user'])
-                   ->whereRaw("LOWER(TRIM(BOTH '-' FROM REPLACE(REGEXP_REPLACE(db_name, '[[:space:][:punct:]]+', '-'), '--', '-'))) = ?", [$slug])
-                   ->first();
+            ->whereRaw("LOWER(TRIM(BOTH '-' FROM REPLACE(REGEXP_REPLACE(db_name, '[[:space:][:punct:]]+', '-'), '--', '-'))) = ?", [$slug])
+            ->first();
     }
 
     public function renderDBMS($slug): InertiaResponse
@@ -457,49 +452,14 @@ class VendorController extends Controller
 
         $currentMonth = $now->copy()->subMonthNoOverflow();
         $currentMonthStart = $currentMonth->startOfMonth()->format('Y-m-d');
-        $currentMonthEnd = $currentMonth->endOfMonth()->format('Y-m-d');
 
-        $previousMonth = $currentMonth->copy()->subMonthNoOverflow();
-        $previousMonthStart = $previousMonth->startOfMonth()->format('Y-m-d');
-        $previousMonthEnd = $previousMonth->endOfMonth()->format('Y-m-d');
-
-        $previousYear = $now->copy()->subYearNoOverflow();
-        $previousYearStart = $previousYear->startOfMonth()->format('Y-m-d');
-        $previousYearEnd = $previousYear->endOfMonth()->format('Y-m-d');
-
-        function getAverageTrends($startDate, $endDate) {
-            return Trend::whereBetween('date', [$startDate, $endDate])
-                ->selectRaw('vendor_id, AVG(score) as average_score')
-                ->groupBy('vendor_id')
-                ->orderBy('average_score', 'desc')
-                ->get();
-        }
-
-        $currentMonthTrends = getAverageTrends($currentMonthStart, $currentMonthEnd);
-        $previousMonthTrends = getAverageTrends($previousMonthStart, $previousMonthEnd);
-        $previousYearTrends = getAverageTrends($previousYearStart, $previousYearEnd);
+        $currentMonthTrends = $this->getAverageTrends($currentMonthStart);
 
         $rank = 1;
-        foreach ($currentMonthTrends as $trend) {
-            if ($vendor->id === $trend->vendor_id) {
-                $vendor->overall_ranking = $rank ++;
-                $vendor->overall_avg_score = (float)$trend->average_score;
-            }
-        }
-
-        $rank = 1;
-        foreach ($previousMonthTrends as $trend) {
-            if ($vendor->id === $trend->vendor_id) {
-                $vendor->prev_month_overall_ranking = $rank ++;
-                $vendor->prev_month_overall_avg_score = (float)$trend->average_score;
-            }
-        }
-
-        $rank = 1;
-        foreach ($previousYearTrends as $trend) {
-            if ($vendor->id === $trend->vendor_id) {
-                $vendor->prev_year_overall_ranking = $rank ++;
-                $vendor->prev_year_overall_avg_score = (float)$trend->average_score;
+        foreach ($currentMonthTrends as $vendorId => $trend) {
+            if ($vendor->id === $vendorId) {
+                $vendor->overall_ranking = $rank++;
+                $vendor->overall_avg_score = $trend;
                 break;
             }
         }
