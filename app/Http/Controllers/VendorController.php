@@ -455,10 +455,8 @@ class VendorController extends Controller
 
         $currentMonthTrends = $this->getAverageTrends($currentMonthStart);
 
-        $rank = 1;
         foreach ($currentMonthTrends as $vendorId => $trend) {
             if ($vendor->id === $vendorId) {
-                $vendor->overall_ranking = $rank++;
                 $vendor->overall_avg_score = $trend;
                 break;
             }
