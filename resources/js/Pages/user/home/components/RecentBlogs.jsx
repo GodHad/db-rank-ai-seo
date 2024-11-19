@@ -45,7 +45,7 @@ export default () => {
           fontWeight="700"
           lineHeight="100%"
         >
-          Recently Blogs
+          Recent Blogs
         </Text>
       </Flex>
       <SimpleGrid columns={{ base: 1, lg: 3 }} gap='20px' mb='20px' justifyContent={"center"}>
