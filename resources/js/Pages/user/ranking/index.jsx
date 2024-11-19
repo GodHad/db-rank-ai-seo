@@ -54,7 +54,6 @@ export default function Ranking({ content, route, category }) {
 
     const [showingCategory, setShowingCategory] = useState(Number(category) || 0);
     useEffect(() => {
-        console.log(showingCategory, options)
         if (showingCategory === 0) setData(vendors);
         else {
             const showingVendors = vendors.filter(vendor => vendor.primary_category.map(category => category.id).includes(showingCategory));

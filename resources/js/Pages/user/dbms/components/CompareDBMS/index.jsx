@@ -66,7 +66,6 @@ export default function CompareDBMS({ slug }) {
   useEffect(() => {
     setData(selectedDBMS.map(dbms => {
       const primaryRanking = dbms.primary_ranking.split(' ');
-      console.log(dbms)
       return {
         ...dbms,
         overall_ranking: `
