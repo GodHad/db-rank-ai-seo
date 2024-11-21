@@ -26,8 +26,8 @@ class ContactController extends Controller
         if ($validator->fails()) return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
 
         Mail::send('emails.contact', $data, function ($message) use ($data) {
-            $message->from($data['email']);
-            $message->to('office@dbrank.ai')
+            $message->from('office@dbrank.ai');
+            $message->to($data['email'])
                     ->subject('Contact Request from ' . $data['firstname']);
         });
         
