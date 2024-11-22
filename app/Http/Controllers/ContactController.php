@@ -28,7 +28,7 @@ class ContactController extends Controller
         Mail::send('emails.contact', $data, function ($message) use ($data) {
             $message->from('office@dbrank.ai', $data['firstname'] . ' ' . $data['lastname']); 
             $message->replyTo($data['email']);
-            $message->to('success.together0303@gmail.com')
+            $message->to('office@dbrank.ai')
                     ->subject('Contact Request from ' . $data['firstname']);
         });
         
