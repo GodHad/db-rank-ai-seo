@@ -29,7 +29,7 @@ class ContactController extends Controller
             $message->from('office@dbrank.ai', $data['firstname'] . ' ' . $data['lastname'] . ' via DB Rank AI'); 
             $message->replyTo($data['email']);
             $message->to('success.together0303@gmail.com')
-                    ->subject('Contact Request from ' . $data['firstname']);
+                    ->subject('Contact Request from ' . $data['firstname'] . ' via DB Rank AI');
         });
         
         return response()->json(['success' => true]);
