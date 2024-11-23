@@ -28,7 +28,7 @@ class ContactController extends Controller
         Mail::send('emails.contact', $data, function ($message) use ($data) {
             $message->from('office@dbrank.ai', $data['firstname'] . ' ' . $data['lastname'] . ' via DB Rank AI'); 
             $message->replyTo($data['email']);
-            $message->to('success.together0303@gmail.com')
+            $message->to('shap@massreach.co.uk')
                     ->subject('Contact Request from ' . $data['firstname'] . ' via DB Rank AI');
         });
         
