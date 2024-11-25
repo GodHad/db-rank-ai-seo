@@ -110,10 +110,12 @@ class VendorRequestController extends Controller
         ]);
         
         Mail::send('emails.contact', $data, function ($message) use ($data) {
-            $message->from($data['email']);
-            $message->to('office@dbrank.ai')
-                    ->subject('Contact Request from ' . $data['firstname']);
+            $message->from('office@dbrank.ai', $data['firstname'] . ' ' . $data['lastname'] . ' via DB Rank AI'); 
+            $message->replyTo($data['email']);
+            $message->to('shap@massreach.co.uk')
+                    ->subject('Claim Vendor Request from ' . $data['firstname'] . ' via DB Rank AI');
         });
+        
         return response()->json(['success' => true]);
     }
 
