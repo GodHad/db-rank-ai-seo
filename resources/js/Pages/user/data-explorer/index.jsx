@@ -29,7 +29,7 @@ const sendMessageToChatBot = async (message) => {
 
 export default function Chat({ content }) {
     const toast = useToast();
-    const maxCodeLength = 500;
+    const maxCodeLength = 2000;
     const [inputOnSubmit, setInputOnSubmit] = useState('');
     const [inputCode, setInputCode] = useState('');
     const [outputCode, setOutputCode] = useState('');
