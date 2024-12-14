@@ -67,7 +67,7 @@ class VendorController extends Controller
     }
 
 
-    public function vendors(Request $request)
+    public function vendors()
     {
         try {
 
@@ -421,12 +421,78 @@ class VendorController extends Controller
 
     public function test()
     {
-        Mail::raw('This is a test email from Laravel using Amazon SES!', function ($message) {
-            $message->from('sunharius@gmail.com');
-            $message->to('office@dbrank.ai')
-                ->subject('Test SES Email');
-        });
-        return response()->json(['success' => true]);
+        $latestDate = HNCount::max('date');
+
+        $hnCounts = HNCount::where('date', $latestDate)->get()->toArray();
+        $githubStars = GHStar::where('date', $latestDate)->get()->toArray();
+        $githubPulls = GHPull::where('date', $latestDate)->get()->toArray();
+
+        $maxHNCount = collect($hnCounts)->max('count');
+        $maxGHStar = collect($githubStars)->max('count');
+        $maxGHPull = collect($githubPulls)->max('count');
+
+        $averageScores = [];
+        foreach ($hnCounts as $hnCount) {
+            $vendorId = $hnCount['vendor_id'];
+
+            $matchingStar = $this->findMatchingRecord($githubStars, $vendorId);
+            $matchingPull = $this->findMatchingRecord($githubPulls, $vendorId);
+
+            $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount;
+            if (isset($matchingStar)) {
+                $averageScores[$vendorId] += $matchingStar['count'] * 25 / $maxGHStar;
+            }
+            if (isset($matchingPull)) {
+                $averageScores[$vendorId] += $matchingPull['count'] * 25 / $maxGHPull;
+            }
+        }
+
+        arsort($averageScores);
+
+        $rank = 1;
+        foreach ($averageScores as $vendorId => $averageScore) {
+            $vendor = Vendor::with('primaryCategory')->find($vendorId);
+            if ($vendor) {
+                $vendor->overall_ranking = $rank++;
+                $vendor->primary_ranking = '';
+                $vendor->save();
+            }
+        }
+
+        $categoryRankings = [];
+
+        $vendors = Vendor::with('primaryCategory')->get();
+
+        $categoryRankings = [];
+
+        foreach ($vendors as $vendor) {
+            foreach ($vendor->primaryCategory as $category) {
+                $categoryId = $category->id;
+
+                if (!isset($categoryRankings[$categoryId])) {
+                    $categoryRankings[$categoryId] = [];
+                }
+
+                $categoryRankings[$categoryId][] = $vendor;
+            }
+        }
+
+        ksort($categoryRankings);
+
+        foreach ($categoryRankings as $categoryId => $vendorsInCategory) {
+            usort($vendorsInCategory, fn($a, $b) => $a->overall_ranking <=> $b->overall_ranking);
+
+            foreach ($vendorsInCategory as $index => $vendor) {
+                $currentRanking = $vendor->primary_ranking ?? '';
+                $vendor->primary_ranking = trim($currentRanking . ' ' . ($index + 1));
+            }
+        }
+
+        foreach ($vendors as $vendor) {
+            $vendor->save();
+        }
+
+        return response()->json(['success' => true, 'categoryRanking' => $categoryRankings]);
     }
 
     public function render(): InertiaResponse
@@ -437,7 +503,13 @@ class VendorController extends Controller
 
     private function getDBMSBySlug($slug)
     {
-        return Vendor::with(['primaryCategory', 'secondaryCategory', 'user'])
+        return Vendor::with([
+                'primaryCategory' => function ($query) {
+                    $query->orderBy('id', 'asc'); // Sort primaryCategory by id in ascending order
+                }, 
+                'secondaryCategory', 
+                'user'
+            ])
             ->whereRaw("LOWER(TRIM(BOTH '-' FROM REPLACE(REGEXP_REPLACE(db_name, '[[:space:][:punct:]]+', '-'), '--', '-'))) = ?", [$slug])
             ->first();
     }
@@ -455,11 +527,14 @@ class VendorController extends Controller
 
         $currentMonthTrends = $this->getAverageTrends($currentMonthStart);
 
+        $rank = 1;
         foreach ($currentMonthTrends as $vendorId => $trend) {
             if ($vendor->id === $vendorId) {
+                $vendor->overall_ranking = $rank;
                 $vendor->overall_avg_score = $trend;
                 break;
             }
+            $rank++;
         }
 
         return Inertia::render('user/dbms/components/DBMS', ['slug' => $slug, 'selectedDBMS' => $vendor]);

@@ -4,15 +4,11 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Vendor;
-use App\Models\PrimaryCategoryVendor;
-use App\Models\CountryTrend;
-use App\Models\Trend;
 use App\Models\GHPull;
 use App\Models\GHStar;
 use App\Models\HNCount;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Collection;
 use Carbon\Carbon;
 
 class FetchTrends extends Command
@@ -37,7 +33,6 @@ class FetchTrends extends Command
     public function handle()
     {
         set_time_limit(0);
-        $exePath = __DIR__ . '/main.exe';
     
         if ($this->option('all')) {
             $keywords = Vendor::get(['db_name', 'giturl', 'id'])->map(function ($vendor) {
@@ -125,9 +120,6 @@ class FetchTrends extends Command
 
     private function updateRankings()
     {
-        Log::info('Start to re-ranking');
-        
-
         $latestDate = HNCount::max('date');
         
         $hnCounts = HNCount::where('date', $latestDate)->get()->toArray();
@@ -141,22 +133,16 @@ class FetchTrends extends Command
         $averageScores = [];
         foreach ($hnCounts as $hnCount) {
             $vendorId = $hnCount['vendor_id'];
-        
+
             $matchingStar = $this->findMatchingRecord($githubStars, $vendorId);
             $matchingPull = $this->findMatchingRecord($githubPulls, $vendorId);
 
-            if ($matchingStar && $matchingPull) {
-                $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount +
-                    ($matchingStar['count'] * 25 / $maxGHStar) + 
-                    ($matchingPull['count'] * 25 / $maxGHPull);
-            } else if ($matchingStar) {
-                $averageScores[$vendorId] = $hnCount['count'] * 75 / $maxHNCount +
-                    ($matchingStar['count'] * 25 / $maxGHStar);
-            } else if ($matchingPull) {
-                $averageScores[$vendorId] = $hnCount['count'] * 75 / $maxHNCount +
-                    ($matchingPull['count'] * 25 / $maxGHPull);
-            } else {
-                $averageScores[$vendorId] = $hnCount['count'] * 100 / $maxHNCount;
+            $averageScores[$vendorId] = $hnCount['count'] * 50 / $maxHNCount;
+            if (isset($matchingStar)) {
+                $averageScores[$vendorId] += $matchingStar['count'] * 25 / $maxGHStar;
+            }
+            if (isset($matchingPull)) {
+                $averageScores[$vendorId] += $matchingPull['count'] * 25 / $maxGHPull;
             }
         }
         
@@ -172,7 +158,6 @@ class FetchTrends extends Command
             }
         }
 
-        Log::info('Update overall ranking');
         $categoryRankings = [];
 
         $vendors = Vendor::with('primaryCategory')->get();
@@ -191,6 +176,8 @@ class FetchTrends extends Command
             }
         }
 
+        ksort($categoryRankings);
+
         foreach ($categoryRankings as $categoryId => $vendorsInCategory) {
             usort($vendorsInCategory, fn($a, $b) => $a->overall_ranking <=> $b->overall_ranking);
 
@@ -203,8 +190,6 @@ class FetchTrends extends Command
         foreach ($vendors as $vendor) {
             $vendor->save();
         }
-
-        Log::info('Finish re-ranking');
     }
 
     private function fetchMonthlyMentions($keyword, $startDate, $endDate)
